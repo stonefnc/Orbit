@@ -1,0 +1,4 @@
+{
+  "_help": "Your own list of notable aircraft. Add entries below; they override the imported community list. 'hex' is the 6-character ICAO24 Mode S code (find it from the tail number in the FAA registry, or on the aircraft card under More details). Only public registry facts, please.",
+  "aircraft": []
+}

@@ -1,0 +1,547 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+    <title>Orbit · Global monitor</title>
+    <!-- Installable web app (PWA): manifest, icons and the iPhone home-screen settings. The service worker is registered in src/pwa.ts (production builds only). -->
+    <link rel="manifest" href="/manifest.webmanifest" />
+    <meta name="theme-color" content="#050608" />
+    <link rel="icon" type="image/png" sizes="32x32" href="/icons/favicon-32.png" />
+    <link rel="apple-touch-icon" href="/icons/apple-touch-icon.png" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-title" content="Orbit" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+    <!-- Open the connections to the map and 3D-tile servers while the page itself is still starting up. -->
+    <link rel="preconnect" href="https://api.cesium.com" crossorigin />
+    <link rel="preconnect" href="https://assets.ion.cesium.com" crossorigin />
+    <link rel="preconnect" href="https://tile.googleapis.com" crossorigin />
+    <link rel="preconnect" href="https://services.arcgisonline.com" crossorigin />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600&family=Inter:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+    <div id="app" class="command-shell">
+      <header class="command-header">
+        <div class="command-header-left">
+          <div id="orbit-logo" class="orbit-logo" role="img" aria-label="Orbit"></div>
+          <div class="command-header-brand-block">
+            <div class="command-brand" id="command-brand">Orbit</div>
+            <div class="command-classification" aria-hidden="true">
+              <span id="command-tagline" class="command-tagline">Earth, in motion</span><span class="command-live"> · LIVE</span>
+            </div>
+          </div>
+          <div id="menu-bar" class="menu-bar" role="toolbar" aria-label="Menu">
+            <button id="fly-mode-btn" type="button" data-menu="fly" class="menu-icon-only is-unavailable" aria-pressed="false" aria-label="Fly mode" title="Fly freely through the 3D city (F)">
+              <svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" stroke-linecap="round" aria-hidden="true"><path d="M3.5 11.2 20.5 3.5l-7.7 17-2.4-7.2z"/></svg>
+              <span class="fly-label">Fly mode</span>
+            </button>
+            <button type="button" data-menu="map" aria-expanded="false" aria-label="Map view">
+              <svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3l9 5-9 5-9-5z"/><path d="M3 13l9 5 9-5"/></svg>
+              <span>Map</span>
+            </button>
+            <button type="button" data-menu="layers" aria-expanded="false" aria-label="Data layers">
+              <svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="4" width="6.5" height="6.5" rx="1.6"/><rect x="13.5" y="4" width="6.5" height="6.5" rx="1.6"/><rect x="4" y="13.5" width="6.5" height="6.5" rx="1.6"/><rect x="13.5" y="13.5" width="6.5" height="6.5" rx="1.6"/></svg>
+              <span>Layers</span>
+            </button>
+            <button type="button" data-menu="keys" class="menu-icon-only" aria-expanded="false" aria-label="Keys and tokens" title="Keys &amp; tokens">
+              <svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="8" cy="15" r="4"/><path d="M10.8 12.2 20 3M16 7l3 3M13.5 9.5l2.5 2.5"/></svg>
+            </button>
+            <button type="button" data-menu="theme" class="menu-icon-only" aria-pressed="false" aria-label="Light or dark bar" title="Switch to the light bar">
+              <svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="8"/><path d="M12 4a8 8 0 0 0 0 16z" fill="currentColor"/></svg>
+            </button>
+          </div>
+        </div>
+        <div class="command-header-right">
+          <div id="loc-search" class="loc-search" role="search" aria-label="Search places">
+            <button id="loc-search-btn" class="loc-search-btn" type="button" aria-label="Search places" title="Search places (/)">
+              <svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true">
+                <circle cx="10.5" cy="10.5" r="6.5" />
+                <path d="M15.5 15.5 21 21" />
+              </svg>
+            </button>
+            <input id="loc-search-input" type="search" placeholder="Search places, stores, planes, satellites…" autocomplete="off" aria-label="Search places, stores, planes, satellites, cameras" />
+            <button id="loc-locate-btn" class="loc-search-btn loc-locate" type="button" aria-label="Use my location" title="Use my location">
+              <svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true">
+                <circle cx="12" cy="12" r="6.5" />
+                <circle cx="12" cy="12" r="1.8" fill="currentColor" />
+                <path d="M12 2v3.5M12 18.5V22M2 12h3.5M18.5 12H22" />
+              </svg>
+            </button>
+            <div id="loc-suggest" class="dir-suggest loc-suggest hidden" role="listbox"></div>
+          </div>
+          <form id="dir-search" class="dir-search hidden" autocomplete="off" role="search" aria-label="Directions search">
+            <label class="dir-field">
+              <span class="dir-dot from" aria-hidden="true"></span>
+              <input id="dir-from" type="search" placeholder="From — address or place" aria-label="Directions from" />
+            </label>
+            <button id="dir-swap" class="dir-swap" type="button" title="Swap start and destination" aria-label="Swap">⇄</button>
+            <label class="dir-field">
+              <span class="dir-dot to" aria-hidden="true"></span>
+              <input id="dir-to" type="search" placeholder="To — address or place" aria-label="Directions to" />
+            </label>
+            <div class="dir-modes-inline" role="group" aria-label="Travel mode">
+              <button type="button" data-mode="driving" class="active">Drive</button>
+              <button type="button" data-mode="foot">Walk</button>
+              <button type="button" data-mode="bike">Cycle</button>
+            </div>
+            <button
+              id="dir-avoid"
+              class="dir-avoid"
+              type="button"
+              aria-pressed="false"
+              title="Plan a route that steers around license-plate readers mapped in OpenStreetMap (a best-effort simulation)"
+            >
+              Avoid ALPR
+            </button>
+            <div id="dir-suggest" class="dir-suggest hidden" role="listbox"></div>
+          </form>
+        </div>
+      </header>
+
+      <div id="track-pill" class="track-pill hidden" role="status"></div>
+      <div id="nav-pad" class="nav-pad" role="group" aria-label="Camera controls">
+        <button type="button" data-nav="home" aria-label="Whole Earth" title="Back out to the whole Earth">
+          <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="8.5"/><path d="M3.8 9.5h16.4M3.8 14.5h16.4M12 3.5c-2.6 2.7-3.6 5.4-3.6 8.5s1 5.8 3.6 8.5M12 3.5c2.6 2.7 3.6 5.4 3.6 8.5s-1 5.8-3.6 8.5"/></svg>
+        </button>
+        <button type="button" data-nav="zoom-in" aria-label="Zoom in" title="Zoom in">+</button>
+        <button type="button" data-nav="zoom-out" aria-label="Zoom out" title="Zoom out">−</button>
+        <button type="button" data-nav="tilt-up" aria-label="Tilt up" title="Tilt up (or Shift-drag)">
+          <svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true"><path d="M5 15l7-7 7 7" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </button>
+        <button type="button" data-nav="tilt-down" aria-label="Tilt down" title="Tilt down">
+          <svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true"><path d="M5 9l7 7 7-7" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </button>
+        <button type="button" data-nav="north" aria-label="Face north, look straight down" title="Face north, look straight down">
+          <svg class="nav-needle" viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path d="M12 3l4 10h-8z" fill="#ff453a"/><path d="M12 21l-4-8h8z" fill="currentColor" opacity=".55"/></svg>
+        </button>
+      </div>
+      <div id="fly-mode" class="fly-mode hidden">
+        <div id="fly-hint" class="fly-hint hidden" role="status">
+          <div class="fly-keys">
+            <span><kbd>W</kbd><kbd>A</kbd><kbd>S</kbd><kbd>D</kbd> move</span>
+            <span><kbd>Q</kbd><kbd>E</kbd> down / up</span>
+            <span><kbd>Shift</kbd> boost</span>
+            <span><kbd>Wheel</kbd> speed</span>
+            <span>Drag to look</span>
+            <span><kbd>Esc</kbd> exit</span>
+          </div>
+          <div id="fly-stats" class="fly-stats"></div>
+        </div>
+
+      </div>
+
+      <div class="command-body">
+        <div class="command-map-stage">
+          <div id="globe"></div>
+
+          <div class="map-overlay map-overlay-left" aria-label="Map controls">
+            <div class="cc-module">
+              <div class="cc-module-title">Data layers</div>
+              <div class="cc-module-body cc-stack">
+                <div class="bottom-controls" id="layer-toggles">
+                  <button id="toggle-satellites" class="cc-btn" type="button">Satellites</button>
+                  <button id="toggle-planes" class="cc-btn" type="button">Aircraft</button>
+                  <button id="toggle-vessels" class="cc-btn" type="button">SHP · OFF</button>
+                  <button id="toggle-alpr" class="cc-btn" type="button">ALPR · OFF</button>
+                  <button id="toggle-datacenters" class="cc-btn" type="button">DC · OFF</button>
+
+                  <button
+                    id="toggle-photorealistic-3d"
+                    class="cc-btn"
+                    type="button"
+                    title="Photorealistic 3D city meshes (Google, via Cesium ion). Zoom to city level. Only where Google has captured them: many cities, not the whole globe."
+                  >
+                    3D PHOTO · OFF
+                  </button>
+                  <button id="toggle-earthcam" class="cc-btn" type="button" title="Live public traffic &amp; city cameras (DOT / municipal open data)">
+                    CAM · OFF
+                  </button>
+                </div>
+                <div id="key-hints" class="key-hints" role="status" aria-live="polite"></div>
+                <div id="source-controls" class="source-controls hidden cc-stack-h">
+                  <button id="source-keeptrack" class="cc-btn cc-btn-sm" type="button">KeepTrack</button>
+                  <button id="source-celestrak" class="cc-btn cc-btn-sm" type="button">CelesTrak</button>
+                  <button id="source-show-all" class="cc-btn cc-btn-sm" type="button">Cache</button>
+                </div>
+                <div id="more-layers-body" class="more-layers-body"></div>
+              </div>
+            </div>
+            <div class="cc-module hidden" id="aircraft-filters-module">
+              <div class="cc-module-title">Aircraft filters</div>
+              <div class="cc-module-body">
+                <div id="plane-filter-controls" class="plane-filter-controls hidden" aria-label="Plane tools and filters">
+                  <div class="plane-search-block">
+                    <label class="plane-search-label" for="plane-search-input">Find aircraft</label>
+                    <div class="plane-search-row">
+                      <input
+                        id="plane-search-input"
+                        class="plane-search-input"
+                        type="search"
+                        placeholder="CALLSIGN · ICAO · REG"
+                        enterkeyhint="search"
+                        autocomplete="off"
+                        spellcheck="false"
+                      />
+                      <button id="plane-search-go" type="button" class="plane-search-btn">Find</button>
+                      <a
+                        id="plane-search-fr24"
+                        class="plane-fr24-link hidden"
+                        href="https://www.flightradar24.com/"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        >Compare →</a
+                      >
+                    </div>
+                    <p id="plane-search-feedback" class="plane-search-feedback" aria-live="polite"></p>
+                    <div id="plane-search-results" class="plane-search-results" hidden></div>
+                  </div>
+                  <div class="plane-filter-buttons">
+                    <span class="plane-filter-label">Show</span>
+                    <button id="plane-filter-airline" class="plane-filter-btn active" type="button" data-plane-kind="airline">
+                      Airlines
+                    </button>
+                    <button id="plane-filter-bizjet" class="plane-filter-btn active" type="button" data-plane-kind="bizjet">
+                      Private/Biz
+                    </button>
+                    <button id="plane-filter-other" class="plane-filter-btn active" type="button" data-plane-kind="other">
+                      GA/Other
+                    </button>
+                    <button id="plane-filter-military" class="plane-filter-btn active" type="button" data-plane-kind="military">
+                      Military
+                    </button>
+                    <button
+                      id="plane-filter-notable"
+                      class="plane-filter-btn active"
+                      type="button"
+                      title="Glow around aircraft owned by well-known people (from a public registry list)"
+                    >
+                      Notable
+                    </button>
+                  </div>
+                  <div id="notable-list" class="notable-list">
+                    <button id="notable-list-toggle" class="notable-list-toggle" type="button" aria-expanded="false">
+                      <span>Notable aircraft</span><span id="notable-list-count" class="notable-list-count"></span>
+                    </button>
+                    <div id="notable-list-body" class="notable-list-body hidden"></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div id="datacenter-control-module" class="cc-module alpr-module hidden">
+              <div class="cc-module-title">Data centers (OSM)</div>
+              <div class="cc-module-body cc-stack alpr-module-body">
+                <p id="datacenter-dataset-status" class="alpr-dataset-status mono">Dataset: …</p>
+                <div id="datacenter-filters" class="alpr-filters hidden">
+                  <label class="alpr-filter-lbl" for="datacenter-filter-operator">Operator</label>
+                  <select id="datacenter-filter-operator" class="alpr-filter-select mono"></select>
+                </div>
+                <p class="alpr-footnote mono">
+                  OpenStreetMap tags
+                  <code>telecom=data_center</code> and <code>building=data_center</code> (see
+                  <a href="https://wiki.openstreetmap.org/wiki/Tag:telecom%3Ddata_center" target="_blank" rel="noopener noreferrer">OSM wiki</a
+                  >). Coverage is <strong>community-mapped and incomplete</strong> — also on
+                  <a href="https://openinframap.org/" target="_blank" rel="noopener noreferrer">Open Infrastructure Map</a>. ODbL · © OSM contributors.
+                </p>
+              </div>
+            </div>
+            <div id="earthcam-control-module" class="cc-module earthcam-module hidden">
+              <div class="cc-module-title">Live cameras (CCTV)</div>
+              <div class="cc-module-body cc-stack alpr-module-body">
+                <p id="earthcam-dataset-status" class="alpr-dataset-status mono">Dataset: …</p>
+                <div class="plane-search-block">
+                  <label class="plane-search-label" for="earthcam-search-input">Search cameras</label>
+                  <input
+                    id="earthcam-search-input"
+                    class="plane-search-input"
+                    type="search"
+                    placeholder="Name, city, country…"
+                    autocomplete="off"
+                    spellcheck="false"
+                  />
+                </div>
+                <div id="earthcam-filters" class="alpr-filters hidden">
+                  <label class="alpr-filter-lbl" for="earthcam-filter-country">Country</label>
+                  <select id="earthcam-filter-country" class="alpr-filter-select mono"></select>
+                  <label class="alpr-filter-lbl" for="earthcam-filter-city">City</label>
+                  <select id="earthcam-filter-city" class="alpr-filter-select mono"></select>
+                  <label class="alpr-filter-lbl" for="earthcam-filter-category">Category</label>
+                  <select id="earthcam-filter-category" class="alpr-filter-select mono"></select>
+                  <label class="alpr-filter-lbl" for="earthcam-filter-status">Status</label>
+                  <select id="earthcam-filter-status" class="alpr-filter-select mono"></select>
+                  <label class="earthcam-viewport-only">
+                    <input type="checkbox" id="earthcam-viewport-only" />
+                    <span>Current viewport only</span>
+                  </label>
+                  <button type="button" id="earthcam-view-all-btn" class="cc-btn cc-btn-sm">
+                    View all on globe
+                  </button>
+                </div>
+                <p class="alpr-footnote mono">
+                  <strong>Real public cameras</strong> published by transportation agencies and cities (about 20 sources: 14 US
+                  state/provincial 511 sites incl. Georgia, Florida and Pennsylvania, Caltrans, TfL, DriveBC, Austin, Calgary and
+                  Finland). Frames are real still images fetched live through your local server — not simulated.
+                  Zoom in to a covered region to load cameras. Orientation is shown only where the agency publishes it.
+                </p>
+              </div>
+            </div>
+            <div id="alpr-control-module" class="cc-module alpr-module hidden">
+              <div class="cc-module-title">ALPR / plate readers</div>
+              <div class="cc-module-body cc-stack alpr-module-body">
+                <p id="alpr-dataset-status" class="alpr-dataset-status mono">Dataset: …</p>
+                <div id="alpr-place-search-panel" aria-label="Fly globe to place">
+                  <div class="plane-search-block alpr-place-search-block">
+                    <label class="plane-search-label" for="alpr-place-search-input">Fly globe to</label>
+                    <div class="plane-search-row">
+                      <input
+                        id="alpr-place-search-input"
+                        class="plane-search-input"
+                        type="search"
+                        placeholder="City, address, landmark…"
+                        enterkeyhint="search"
+                        autocomplete="street-address"
+                        spellcheck="true"
+                      />
+                      <button id="alpr-place-search-go" type="button" class="plane-search-btn">Go</button>
+                    </div>
+                    <p id="alpr-place-search-feedback" class="plane-search-feedback mono" aria-live="polite"></p>
+                    <div id="alpr-place-search-results" class="plane-search-results" hidden></div>
+                  </div>
+                </div>
+                <div id="alpr-filters" class="alpr-filters hidden">
+                  <label class="alpr-filter-lbl" for="alpr-filter-source">Source</label>
+                  <select id="alpr-filter-source" class="alpr-filter-select mono"></select>
+                  <label class="alpr-filter-lbl" for="alpr-filter-vendor">Vendor</label>
+                  <select id="alpr-filter-vendor" class="alpr-filter-select mono"></select>
+                  <label class="alpr-filter-lbl" for="alpr-filter-region">Region</label>
+                  <select id="alpr-filter-region" class="alpr-filter-select mono"></select>
+                </div>
+                <div id="alpr-legend" class="alpr-legend" aria-label="Camera types in view"></div>
+                <p class="alpr-footnote mono">
+                  Same globe only — no vendor proprietary maps. DeFlock-oriented workflow:
+                  <a
+                    href="https://github.com/FoggedLens/deflock"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    >FoggedLens/deflock</a
+                  >
+                  · schema <code>ALPR_ADAPTER.md</code>
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <div class="map-overlay map-overlay-right" aria-label="Selection details">
+            <div class="sidebar-stack">
+            <aside id="sat-info" class="sat-info hidden intel-card">
+              <div class="intel-card-header">
+                <h2 id="info-title">Selected</h2>
+                <span id="intel-card-mode-badge" class="intel-card-badge">SIGINT</span>
+                <button id="intel-card-close" class="intel-card-close" type="button" aria-label="Close" title="Close (Esc)">×</button>
+              </div>
+              <div class="intel-card-content">
+              <p id="sat-name" class="intel-primary">Click a satellite</p>
+              <div id="sat-info-core">
+              <div id="plane-info-media" class="plane-info-media aircraft-only-info hidden">
+                <img id="plane-info-photo" class="plane-info-photo hidden" alt="" />
+                <div id="plane-info-silhouette" class="plane-info-silhouette" aria-hidden="true">
+                  <img src="/airplane-map-icon.png" width="96" height="96" alt="" />
+                </div>
+                <p id="plane-info-attrib" class="plane-info-attrib"></p>
+                <p id="plane-model-gallery-hint" class="plane-model-gallery-hint hidden">
+                  Same type — Wikimedia Commons (tap to preview)
+                </p>
+                <div
+                  id="plane-model-gallery"
+                  class="plane-model-gallery hidden"
+                  role="list"
+                  aria-label="Images of this aircraft type"
+                ></div>
+              </div>
+              <div id="plane-summary" class="plane-summary aircraft-only-info hidden">
+                <div id="plane-summary-head" class="plane-summary-head"></div>
+                <div id="plane-summary-operator" class="plane-summary-operator"></div>
+                <div id="plane-summary-route" class="plane-summary-route"></div>
+                <div id="plane-summary-stats" class="plane-summary-stats"></div>
+                <div id="plane-summary-cams" class="plane-summary-cams"></div>
+              </div>
+              <div class="row plane-legacy"><span id="info-l1">Operator</span><strong id="sat-operator">-</strong></div>
+              <div class="row plane-legacy aircraft-only-info hidden">
+                <span id="info-traffic">Traffic bucket</span><strong id="sat-traffic-kind">—</strong>
+              </div>
+              <div class="row plane-legacy aircraft-only-info hidden">
+                <span id="info-flight-carrier-lbl">Carrier (flight ID)</span><strong id="sat-flight-carrier-guess">—</strong>
+              </div>
+              <div class="row plane-legacy hidden" id="plane-aviationstack-hint-row" aria-live="polite">
+                <span id="info-aviationstack-hint-lbl">Airline destination data</span><strong id="sat-aviationstack-hint"></strong>
+              </div>
+              <div class="row plane-legacy"><span id="info-l2">Operator Country</span><strong id="sat-country">-</strong></div>
+              <div class="row plane-legacy"><span id="info-l3">Speed</span><strong id="sat-speed">-</strong></div>
+              <div class="row plane-legacy"><span id="info-l4">Purpose</span><strong id="sat-purpose">-</strong></div>
+              <div id="sat-orbit-rows" class="plane-extra-rows hidden"></div>
+              <div id="plane-route-block" class="plane-route-block plane-legacy hidden" aria-labelledby="plane-route-heading">
+                <p id="plane-route-heading" class="plane-route-heading">Estimated route</p>
+                <div class="row"><span id="info-route-from">From</span><strong id="sat-route-from">—</strong></div>
+                <div class="row"><span id="info-route-to">To</span><strong id="sat-route-to">—</strong></div>
+              </div>
+              <details class="plane-more aircraft-only-info hidden"><summary>More details</summary><div id="plane-extra-rows" class="plane-extra-rows"></div></details>
+              <div class="row plane-legacy"><span id="info-l5">Data Source</span><strong id="sat-source">CelesTrak</strong></div>
+              </div>
+              <div id="alpr-panel-body" class="alpr-panel-body hidden" aria-label="ALPR sensor">
+                <p class="alpr-panel-kicker mono">Surveillance infrastructure</p>
+                <p id="alpr-sensor-head" class="intel-primary alpr-sensor-head">—</p>
+                <div class="row"><span>Sensor ID</span><strong id="alpr-meta-id" class="mono">—</strong></div>
+                <div class="row"><span>Install label</span><strong id="alpr-meta-name">—</strong></div>
+                <div class="row"><span>Source tag</span><strong id="alpr-meta-source" class="mono">—</strong></div>
+                <div class="row"><span>Vendor</span><strong id="alpr-meta-vendor">—</strong></div>
+                <div class="row"><span>Region</span><strong id="alpr-meta-region">—</strong></div>
+                <div class="row"><span>Confidence</span><strong id="alpr-meta-confidence" class="mono">—</strong></div>
+                <div class="row"><span>Bearing / coverage</span><strong id="alpr-meta-bearing" class="mono">—</strong></div>
+                <div class="row"><span>View range</span><strong id="alpr-meta-view">—</strong></div>
+                <p class="view-range-note" id="alpr-view-note"></p>
+                <div class="row"><span>Notes</span><strong id="alpr-meta-notes">—</strong></div>
+                <div class="row"><span>Attribution</span><strong id="alpr-meta-attrib" class="mono">—</strong></div>
+              </div>
+              <div id="datacenter-panel-body" class="alpr-panel-body hidden" aria-label="Data center">
+                <p class="alpr-panel-kicker mono">Telecom infrastructure (OSM)</p>
+                <p id="datacenter-display-head" class="intel-primary alpr-sensor-head">—</p>
+                <div class="row"><span>OSM object</span><strong id="datacenter-meta-osm" class="mono">—</strong></div>
+                <div class="row"><span>Name</span><strong id="datacenter-meta-name">—</strong></div>
+                <div class="row"><span>Operator</span><strong id="datacenter-meta-operator">—</strong></div>
+                <div class="row"><span>Owner</span><strong id="datacenter-meta-owner">—</strong></div>
+                <div class="row"><span>Ref</span><strong id="datacenter-meta-ref" class="mono">—</strong></div>
+                <div class="row"><span>OSM tags</span><strong id="datacenter-meta-tags" class="mono">—</strong></div>
+                <div class="row"><span>Region</span><strong id="datacenter-meta-region">—</strong></div>
+                <div class="row"><span>Notes</span><strong id="datacenter-meta-notes">—</strong></div>
+                <div class="row">
+                  <span>Map link</span
+                  ><strong
+                    ><a id="datacenter-meta-osm-link" href="https://www.openstreetmap.org/" target="_blank" rel="noopener noreferrer"
+                      >OpenStreetMap</a
+                    ></strong
+                  >
+                </div>
+                <div class="row"><span>Attribution</span><strong id="datacenter-meta-attrib" class="mono">—</strong></div>
+              </div>
+              <div id="earthcam-panel-body" class="alpr-panel-body earthcam-panel-body hidden" aria-label="Live camera">
+                <p class="alpr-panel-kicker mono">Live observation</p>
+                <p id="earthcam-panel-state" class="earthcam-panel-state mono" aria-live="polite">—</p>
+                <div class="earthcam-thumb-wrap">
+                  <img id="earthcam-thumb" class="earthcam-thumb hidden" alt="" />
+                  <div id="earthcam-thumb-placeholder" class="earthcam-thumb-placeholder" aria-hidden="true">
+                    <span class="mono">NO PREVIEW</span>
+                  </div>
+                </div>
+                <p id="earthcam-display-head" class="intel-primary alpr-sensor-head earthcam-display-head">—</p>
+                <div id="earthcam-embed-wrap" class="earthcam-embed-wrap hidden">
+                  <iframe
+                    id="earthcam-embed-frame"
+                    class="earthcam-embed-frame"
+                    title="Licensed camera embed"
+                    loading="lazy"
+                    referrerpolicy="no-referrer"
+                    sandbox="allow-scripts allow-same-origin allow-presentation"
+                  ></iframe>
+                </div>
+                <div class="row"><span>Location</span><strong id="earthcam-meta-location">—</strong></div>
+                <div class="row"><span>Category</span><strong id="earthcam-meta-category">—</strong></div>
+                <div class="row"><span>Status</span><strong id="earthcam-meta-status" class="mono">—</strong></div>
+                <div class="row"><span>Source</span><strong id="earthcam-meta-source" class="mono">—</strong></div>
+                <div class="row"><span>Notes</span><strong id="earthcam-meta-notes">—</strong></div>
+                <div class="row"><span>View range</span><strong id="earthcam-meta-view">—</strong></div>
+                <p class="view-range-note" id="earthcam-view-note"></p>
+                <div class="row"><span>Attribution</span><strong id="earthcam-meta-attrib" class="mono">—</strong></div>
+                <div class="earthcam-panel-actions">
+                  <button type="button" id="earthcam-live-btn" class="cc-btn cc-btn-sm">Watch live</button>
+                  <button type="button" id="earthcam-fly-btn" class="cc-btn cc-btn-sm">Fly to camera</button>
+                  <a
+                    id="earthcam-external-btn"
+                    class="cc-btn cc-btn-sm earthcam-external-btn"
+                    href="https://www.earthcam.com/"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    >Open agency page</a
+                  >
+                </div>
+              </div>
+              <div id="vessel-panel-body" class="alpr-panel-body hidden" aria-label="AIS vessel">
+                <p id="vessel-kicker" class="alpr-panel-kicker mono">AIS vessel</p>
+                <p id="vessel-display-head" class="intel-primary alpr-sensor-head">—</p>
+                <div class="row"><span>MMSI</span><strong id="vessel-mmsi" class="mono">—</strong></div>
+                <div class="row"><span>Name</span><strong id="vessel-name">—</strong></div>
+                <div class="row"><span>Call sign</span><strong id="vessel-call" class="mono">—</strong></div>
+                <div class="row"><span>SOG</span><strong id="vessel-sog">—</strong></div>
+                <div class="row"><span>COG</span><strong id="vessel-cog">—</strong></div>
+                <div class="row"><span>Heading</span><strong id="vessel-heading">—</strong></div>
+                <div class="row"><span>Nav status</span><strong id="vessel-nav">—</strong></div>
+                <div class="row"><span>Destination (AIS static)</span><strong id="vessel-dest">—</strong></div>
+                <div class="row"><span>Departure / origin</span><strong id="vessel-dep">—</strong></div>
+                <div class="row"><span>ETA (AIS static)</span><strong id="vessel-eta">—</strong></div>
+                <div class="row"><span>IMO</span><strong id="vessel-imo" class="mono">—</strong></div>
+                <div class="row"><span>Ship type (AIS)</span><strong id="vessel-type" class="mono">—</strong></div>
+                <div class="row"><span>Data source</span><strong id="vessel-source">—</strong></div>
+                <div id="vessel-route-block" class="plane-route-block hidden" aria-labelledby="vessel-route-heading">
+                  <p id="vessel-route-heading" class="plane-route-heading">Projected track</p>
+                  <div class="row"><span id="vessel-route-from-lbl">From</span><strong id="vessel-route-from">—</strong></div>
+                  <div class="row"><span id="vessel-route-to-lbl">To</span><strong id="vessel-route-to">—</strong></div>
+                </div>
+                <div id="vessel-extra-rows" class="plane-extra-rows"></div>
+              </div>
+              <div id="place-info-panel" class="place-info-panel hidden" aria-label="Geocoded place">
+                <p class="alpr-panel-kicker mono">Fly-to result</p>
+                <p id="place-info-headline" class="intel-primary place-info-headline">—</p>
+                <div class="row"><span>Category</span><strong id="place-info-category">—</strong></div>
+                <div class="row"><span>Address</span><strong id="place-info-address">—</strong></div>
+                <div class="row hidden" id="place-info-architect-row">
+                  <span>Architect</span><strong id="place-info-architect">—</strong>
+                </div>
+                <div id="place-info-tag-rows" aria-label="OpenStreetMap tags"></div>
+                <div id="place-info-wikipedia-section" class="place-subsection hidden">
+                  <p class="place-subsection-heading">Wikipedia</p>
+                  <div class="row place-info-row-lead hidden" id="place-info-wiki-lead-row">
+                    <span>Lead</span>
+                    <strong id="place-info-wiki-lead">—</strong>
+                  </div>
+                  <div class="row hidden" id="place-info-wiki-article-row">
+                    <span>Article</span>
+                    <strong><a id="place-info-wikipedia-link" href="#" target="_blank" rel="noopener noreferrer">Open</a></strong>
+                  </div>
+                </div>
+                <div class="row hidden" id="place-info-wikidata-row">
+                  <span>Wikidata</span>
+                  <strong><a id="place-info-wikidata-link" href="#" target="_blank" rel="noopener noreferrer">Entity</a></strong>
+                </div>
+                <div class="row"><span>Coordinates</span><strong id="place-info-coords" class="mono">—</strong></div>
+                <div class="row">
+                  <span>Map</span>
+                  <strong><a id="place-info-osm-link" href="#" target="_blank" rel="noopener noreferrer">Browse OSM</a></strong>
+                </div>
+                <div class="row">
+                  <span>Data</span>
+                  <strong id="place-info-source-line" class="place-source-line"
+                    >Nominatim · OSM tags; Wikipedia lead (CC BY-SA); credits from Wikidata P84 / P170 when linked</strong>
+                </div>
+              </div>
+              </div>
+              <button id="plane-card-toggle" class="plane-card-toggle" type="button" aria-expanded="false" aria-controls="sat-info-core">
+                <span id="plane-card-toggle-label">Show all details</span><span class="plane-card-toggle-chev" aria-hidden="true">▾</span>
+              </button>
+            </aside>
+            </div>
+            <aside id="layer-card" class="layer-card hidden" aria-live="polite"></aside>
+            <div id="layer-extras" class="layer-extras" aria-label="Layer controls"></div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+    <script type="module" src="/src/main.ts"></script>
+  </body>
+</html>
+
+

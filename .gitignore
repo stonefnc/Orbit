@@ -1,0 +1,21 @@
+node_modules
+dist
+*.log
+.env
+.env.*
+credentials.json
+.cache
+
+test-results
+playwright-report
+blob-report
+test-results-zerokey/
+.cursor/
+
+# Local HTTPS certificates and keys for dev:lan:https (never commit)
+.certs/
+*.pem
+
+# Windows app build (npm run build:exe)
+exe-build/
+exe-out/

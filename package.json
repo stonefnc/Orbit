@@ -1,0 +1,48 @@
+{
+  "name": "orbit",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "concurrently -n api,vite -c blue,green \"tsx watch server/index.ts\" \"vite\"",
+    "dev:lan": "concurrently -n api,vite -c blue,green \"tsx watch server/index.ts\" \"vite --host\"",
+    "dev:lan:https": "node scripts/dev-lan-https.mjs",
+    "dev:vite": "vite",
+    "dev:node": "node ./node_modules/vite/bin/vite.js",
+    "build": "tsc && tsc -p tsconfig.server.json --noEmit && vite build",
+    "build:release": "node scripts/build-release.mjs",
+    "build:exe": "node scripts/build-exe.mjs",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "test:e2e": "playwright test",
+    "test:e2e:zerokey": "playwright test -c playwright.zerokey.config.ts",
+    "test:e2e:pwa": "playwright test -c playwright.pwa.config.ts",
+    "preview": "vite preview",
+    "build-airports": "node scripts/build-airports.mjs",
+    "build-airline-prefixes": "node scripts/build-airline-prefixes.mjs"
+  },
+  "dependencies": {
+    "cesium": "^1.121.1",
+    "cors": "^2.8.6",
+    "dotenv": "^17.4.2",
+    "express": "^5.2.1",
+    "hls.js": "^1.7.3",
+    "satellite.js": "^6.0.1",
+    "ws": "^8.20.1"
+  },
+  "devDependencies": {
+    "@electron/packager": "^20.3.0",
+    "@playwright/test": "^1.63.0",
+    "@types/cors": "^2.8.19",
+    "@types/express": "^5.0.6",
+    "@types/ws": "^8.18.1",
+    "concurrently": "^9.2.1",
+    "electron": "^44.5.1",
+    "esbuild": "^0.21.5",
+    "tsx": "^4.21.0",
+    "typescript": "^5.6.3",
+    "vite": "^5.4.8",
+    "vite-plugin-cesium": "^1.2.23",
+    "vitest": "^3.2.7"
+  }
+}

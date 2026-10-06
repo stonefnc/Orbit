@@ -1,0 +1,55 @@
+Orbit Restricted Source License
+Copyright (c) 2026 Orbit project authors. All rights reserved.
+
+TERMS
+
+1. Copyright. This repository and its contents ("Software") are protected by
+   copyright. No rights are granted except as expressly stated below.
+
+2. Permitted uses (without a separate written agreement)
+
+   a. Viewing the Software through GitHub’s or your git host’s normal web
+      interface and version-control features (including clone, fetch, and
+      pull), in a way typical for human developers reviewing or checking out
+      a project.
+
+   b. Forking on the same platform for the purpose of proposing changes to
+      this project, subject to the restrictions in section 3.
+
+   c. Local development. A natural person may use a lawful local copy of
+      the Software with any development tools of their choice—including
+      integrated development environments and AI-assisted coding assistants
+      operating on that local copy under the person’s direction—to read,
+      modify, debug, build, or run the Software for personal learning,
+      evaluation, or contribution to this project. This clause is meant to
+      allow day-to-day coding workflows (e.g. editor and assistant features
+      that operate on your workspace). It does not grant any right to
+      republish the Software or to use it as described in section 3.
+
+3. Prohibited without prior written permission from the copyright holder
+
+   a. Automated scraping, harvesting, bulk downloading, mirroring, or
+      systematic collection of the Software—including by companies, data
+      brokers, or crawling services—for the purpose of building databases,
+      datasets, search indices, or other repositories of code.
+
+   b. Using the Software (in whole or in part) as training, fine-tuning,
+      validation, or evaluation data for machine learning models,
+      embeddings, large language models, or similar systems—whether by
+      training from scratch, fine-tuning, distillation, synthetic data
+      generation, or other methods. This restriction applies to you and to
+      any third party you enable to perform such use.
+
+   c. Commercial use, sale, sublicensing, or offering the Software as a
+      hosted “competitive” substitute for this project.
+
+4. No warranty. THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND.
+
+5. Third-party components. Files, subtrees, or dependencies that include
+   their own license terms (for example the `position-api/` directory or
+   npm packages) remain under those respective licenses.
+
+6. Contact. For permissions not covered here, contact the repository owner.
+
+*This is not legal advice. For business or compliance decisions, consult a
+qualified attorney.*

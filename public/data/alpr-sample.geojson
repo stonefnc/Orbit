@@ -1,0 +1,93 @@
+{
+  "type": "FeatureCollection",
+  "attribution": "Synthetic sample for Cesium QA — not live DeFlock data. Replace via VITE_ALPR_DATA_URL.",
+  "license": "CC0-1.0 (placeholder only).",
+  "features": [
+    {
+      "type": "Feature",
+      "properties": {
+        "site_id": "demo-sf-01",
+        "name": "Embarcadero N/B (sample)",
+        "source": "Synthetic fixture",
+        "vendor": "OEM placeholder",
+        "region": "CA · Demo",
+        "confidence": "medium",
+        "bearing_deg": 22,
+        "fov_deg": 42,
+        "range_m": 55,
+        "notes": "Full wedge (bearing + FOV + range)."
+      },
+      "geometry": { "type": "Point", "coordinates": [-122.395, 37.7935] }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "site_id": "demo-sf-02",
+        "name": "Mission St E/B (sample)",
+        "source": "Synthetic fixture",
+        "vendor": "OEM placeholder",
+        "region": "CA · Demo",
+        "confidence": "high",
+        "bearing_deg": 95,
+        "fov_deg": 38,
+        "range_m": 48
+      },
+      "geometry": { "type": "Point", "coordinates": [-122.419, 37.7649] }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "site_id": "demo-sf-03",
+        "name": "Van Ness S/B (sample)",
+        "source": "Community-style tag (fictional)",
+        "vendor": "Municipal label",
+        "region": "CA · Demo",
+        "confidence": "low",
+        "bearing_deg": 180,
+        "notes": "Bearing only — short glow ray, no wedge."
+      },
+      "geometry": { "type": "Point", "coordinates": [-122.422, 37.7815] }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "site_id": "demo-sf-04",
+        "name": "Potrero Ave (sample)",
+        "source": "Community-style tag (fictional)",
+        "vendor": "Municipal label",
+        "region": "CA · Demo",
+        "bearing_deg": 310,
+        "fov_deg": 55,
+        "range_m": 40
+      },
+      "geometry": { "type": "Point", "coordinates": [-122.4074, 37.7572] }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "site_id": "demo-sf-05",
+        "name": "Geary Blvd W/B (sample)",
+        "source": "Synthetic fixture",
+        "vendor": "OEM placeholder",
+        "region": "CA · Demo",
+        "confidence": "medium",
+        "bearing_deg": 270,
+        "fov_deg": 36,
+        "range_m": 52
+      },
+      "geometry": { "type": "Point", "coordinates": [-122.481, 37.7805] }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "site_id": "demo-sf-06",
+        "name": "3rd St S/B (sample)",
+        "source": "Synthetic fixture",
+        "vendor": "OEM placeholder",
+        "region": "CA · Demo",
+        "confidence": "high"
+      },
+      "geometry": { "type": "Point", "coordinates": [-122.391, 37.7755] }
+    }
+  ]
+}

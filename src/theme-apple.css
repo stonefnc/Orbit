@@ -1,0 +1,3733 @@
+/*
+ * Orbit "quiet" theme â€” an Apple-style look: system/Inter type, soft frosted panels, one blue accent,
+ * sentence-case labels and gentle motion.
+ *
+ * It is loaded after style.css and only overrides it. To go back to the original look, remove the
+ * `import "./theme-apple.css"` line from main.ts (or `git checkout pre-restyle`).
+ *
+ * Font note: SF Pro is licensed for Apple platforms only, so the stack uses it where it is installed
+ * (Mac, iPhone, iPad) and Inter â€” the closest open typeface â€” everywhere else.
+ */
+:root {
+  --cc-bg0: #000;
+  --cc-bg1: #1d1d1f;
+  --cc-glass: rgba(29, 29, 31, 0.72);
+  --cc-glass-strong: rgba(29, 29, 31, 0.88);
+  --cc-line: rgba(255, 255, 255, 0.1);
+  --cc-line-bright: rgba(255, 255, 255, 0.18);
+  --cc-cyan: #2997ff;
+  --cc-cyan-dim: #86868b;
+  --cc-text: #f5f5f7;
+  --cc-muted: #86868b;
+  --cc-sans: -apple-system, BlinkMacSystemFont, "SF Pro Text", "SF Pro Display", "Inter", "Helvetica Neue", Arial, sans-serif;
+  --cc-mono: var(--cc-sans);
+
+  --ap-blue: #2997ff;
+  --ap-blue-press: #0071e3;
+  --ap-surface: rgba(29, 29, 31, 0.66);
+  --ap-fill: rgba(255, 255, 255, 0.08);
+  --ap-fill-hover: rgba(255, 255, 255, 0.14);
+  --ap-ease: cubic-bezier(0.28, 0.11, 0.32, 1);
+  --ap-radius: 18px;
+}
+
+html,
+body {
+  font-size: 14px;
+  letter-spacing: -0.011em;
+  line-height: 1.4;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}
+
+/* Sentence case everywhere: the old theme shouted in uppercase mono. */
+.command-shell *,
+.live-win * {
+  text-transform: none !important;
+}
+
+.mono {
+  font-size: 12px;
+  letter-spacing: -0.005em;
+}
+
+/* â€”â€” Shell and header â€”â€” */
+.command-shell {
+  background: #000;
+}
+
+.command-header {
+  background: linear-gradient(180deg, rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0));
+}
+
+.command-brand {
+  font-size: 17px;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  color: var(--cc-text);
+  text-shadow: none;
+}
+
+.command-classification {
+  font-size: 11px;
+  letter-spacing: 0;
+  color: var(--cc-muted);
+}
+
+.command-status {
+  font-size: 12px;
+  color: var(--cc-muted);
+  text-shadow: none;
+}
+
+/* â€”â€” Panels â€”â€” */
+.cc-module,
+.intel-card {
+  border: 1px solid var(--cc-line);
+  border-radius: var(--ap-radius);
+  background: var(--ap-surface);
+  -webkit-backdrop-filter: saturate(180%) blur(28px);
+  backdrop-filter: saturate(180%) blur(28px);
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.35);
+}
+
+.cc-module-title {
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  color: var(--cc-text);
+  padding: 12px 14px 4px;
+}
+
+.cc-module-body {
+  padding: 8px 14px 14px;
+}
+
+.plane-search-label,
+.plane-filter-label {
+  font-size: 12px;
+  letter-spacing: 0;
+  color: var(--cc-muted);
+}
+
+/* â€”â€” Buttons: soft pills; the active one fills with blue â€”â€” */
+.cc-btn,
+.source-btn,
+.plane-filter-btn,
+.live-win-btn,
+.plane-link-btn {
+  font-family: var(--cc-sans);
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: -0.008em;
+  padding: 7px 14px;
+  border: 0;
+  border-radius: 980px;
+  background: var(--ap-fill);
+  color: var(--cc-text);
+  box-shadow: none;
+  transition:
+    background-color 0.25s var(--ap-ease),
+    color 0.25s var(--ap-ease),
+    transform 0.2s var(--ap-ease),
+    opacity 0.25s var(--ap-ease);
+}
+
+.cc-btn-sm {
+  font-size: 12px;
+  padding: 6px 12px;
+}
+
+.cc-btn:hover,
+.source-btn:hover,
+.plane-filter-btn:hover,
+.live-win-btn:hover:not(:disabled),
+.plane-link-btn:hover {
+  background: var(--ap-fill-hover);
+  border-color: transparent;
+  box-shadow: none;
+}
+
+.cc-btn:active,
+.source-btn:active,
+.plane-filter-btn:active,
+.live-win-btn:active,
+.plane-link-btn:active {
+  transform: scale(0.96);
+}
+
+.cc-btn:focus-visible,
+.source-btn:focus-visible,
+.plane-filter-btn:focus-visible,
+.live-win-btn:focus-visible,
+.plane-link-btn:focus-visible,
+.plane-airport-code:focus-visible {
+  outline: 2px solid var(--ap-blue);
+  outline-offset: 2px;
+}
+
+.cc-btn:disabled {
+  opacity: 0.4;
+  color: var(--cc-text);
+  border-color: transparent;
+}
+
+/* Layer toggles that are switched on (class set by src/themeState.ts). */
+.cc-btn.is-on,
+.source-btn.active,
+.live-win-btn.active {
+  background: var(--ap-blue);
+  color: #fff;
+}
+
+.cc-btn.is-on:hover,
+.source-btn.active:hover,
+.live-win-btn.active:hover {
+  background: #4aa8ff;
+}
+
+/* Aircraft filter chips keep their class colour dot; inactive ones fade. */
+.plane-filter-btn,
+.plane-filter-btn.active,
+.plane-filter-btn[data-plane-kind].active {
+  border: 0;
+  box-shadow: none;
+  background: var(--ap-fill);
+}
+
+.plane-filter-btn.active {
+  background: rgba(255, 255, 255, 0.16);
+}
+
+.plane-filter-btn:not(.active) {
+  opacity: 0.45;
+}
+
+/* â€”â€” Inputs â€”â€” */
+.plane-search-input {
+  font-family: var(--cc-sans);
+  font-size: 13px;
+  padding: 8px 14px;
+  border: 0;
+  border-radius: 980px;
+  background: var(--ap-fill);
+  color: var(--cc-text);
+  transition: background-color 0.25s var(--ap-ease), box-shadow 0.25s var(--ap-ease);
+}
+
+.plane-search-input::placeholder {
+  font-size: 13px;
+  color: var(--cc-muted);
+}
+
+.plane-search-input:focus {
+  background: rgba(255, 255, 255, 0.12);
+  box-shadow: 0 0 0 3px rgba(41, 151, 255, 0.45);
+}
+
+/* â€”â€” Selection card â€”â€” */
+.intel-card {
+  height: auto;
+  max-height: calc(100vh - var(--header-h) - 28px);
+}
+
+.intel-card-content {
+  overflow-y: auto;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(255, 255, 255, 0.25) transparent;
+}
+
+.sat-info {
+  padding: 16px 16px 14px;
+}
+
+/* Cards ease in whenever they become visible. */
+.sat-info:not(.hidden),
+.live-win:not(.hidden),
+#plane-summary:not(.hidden) {
+  animation: ap-rise 0.4s var(--ap-ease) both;
+}
+
+@keyframes ap-rise {
+  from {
+    opacity: 0;
+    transform: translateY(8px) scale(0.985);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+.sat-info h2,
+#info-title {
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 0;
+  color: var(--cc-muted);
+}
+
+.intel-card-badge {
+  font-size: 11px;
+  letter-spacing: 0;
+  padding: 2px 9px;
+  background: var(--ap-fill);
+  color: var(--cc-muted);
+}
+
+.intel-primary,
+#sat-name {
+  font-size: 22px;
+  font-weight: 600;
+  letter-spacing: -0.022em;
+  line-height: 1.15;
+  color: var(--cc-text);
+  text-shadow: none;
+  margin: 2px 0 10px;
+}
+
+.sat-info .row {
+  padding: 8px 0;
+  border-top: 1px solid var(--cc-line);
+  font-size: 13px;
+  font-family: var(--cc-sans);
+}
+
+.sat-info .row span {
+  font-size: 13px;
+  letter-spacing: 0;
+  color: var(--cc-muted);
+  flex-basis: 40%;
+}
+
+.sat-info .row strong {
+  font-weight: 500;
+  -webkit-line-clamp: 3;
+  line-clamp: 3;
+}
+
+.sat-info .row strong a,
+.live-win-link,
+.plane-info-attrib a {
+  color: var(--ap-blue);
+}
+
+.sat-info .row strong a:hover,
+.live-win-link:hover {
+  text-decoration: underline;
+}
+
+.sat-info .plane-extra-rows .plane-extra-row,
+.sat-info .plane-extra-rows .plane-extra-row span,
+.sat-info .plane-extra-rows .plane-extra-row strong {
+  font-family: var(--cc-sans);
+  font-size: 13px;
+  letter-spacing: 0;
+}
+
+.sat-info .plane-info-photo {
+  border-radius: 12px;
+}
+
+/* â€”â€” Aircraft summary â€”â€” */
+.plane-chip {
+  font-family: var(--cc-sans);
+  font-size: 12px;
+  letter-spacing: 0;
+  border: 0;
+  background: var(--ap-fill);
+}
+
+.plane-airport-code {
+  font-size: 28px;
+  font-weight: 600;
+  letter-spacing: -0.03em;
+  text-decoration: none;
+  color: var(--cc-text);
+  transition: color 0.25s var(--ap-ease);
+}
+
+.plane-airport-code:not([disabled]) {
+  color: var(--ap-blue);
+}
+
+.plane-airport-code:not([disabled]):hover {
+  color: #6cb8ff;
+  text-decoration: underline;
+  text-underline-offset: 5px;
+}
+
+.plane-airport-name,
+.plane-route-note {
+  font-size: 12px;
+}
+
+.plane-progress {
+  height: 4px;
+  background: var(--ap-fill);
+}
+
+.plane-progress > i {
+  background: var(--ap-blue);
+  transition: width 0.8s var(--ap-ease);
+}
+
+.plane-stat {
+  border: 0;
+  border-radius: 12px;
+  background: var(--ap-fill);
+  padding: 8px 10px;
+}
+
+.plane-stat span {
+  font-size: 11px;
+  letter-spacing: 0;
+  color: var(--cc-muted);
+}
+
+.plane-stat strong {
+  font-size: 15px;
+  font-weight: 600;
+  letter-spacing: -0.015em;
+}
+
+.plane-link-btn {
+  color: var(--ap-blue);
+  background: rgba(41, 151, 255, 0.14);
+}
+
+.plane-link-btn:hover {
+  background: rgba(41, 151, 255, 0.24);
+}
+
+.plane-more > summary {
+  font-size: 13px;
+  letter-spacing: 0;
+  color: var(--ap-blue);
+}
+
+/* â€”â€” Live camera window â€”â€” */
+.live-win {
+  font-family: var(--cc-sans);
+  border: 1px solid var(--cc-line);
+  border-radius: var(--ap-radius);
+  background: rgba(29, 29, 31, 0.9);
+  -webkit-backdrop-filter: saturate(180%) blur(28px);
+  backdrop-filter: saturate(180%) blur(28px);
+  box-shadow: 0 24px 80px rgba(0, 0, 0, 0.55);
+}
+
+.live-win-head {
+  background: transparent;
+  border-bottom: 1px solid var(--cc-line);
+  padding: 12px 14px;
+}
+
+.live-win-title {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--cc-text);
+}
+
+.live-win-sub,
+.live-win-time,
+.live-win-credit {
+  font-size: 12px;
+  color: var(--cc-muted);
+}
+
+.live-win-foot {
+  border-top: 1px solid var(--cc-line);
+  padding: 8px 14px;
+}
+
+.live-win-credit {
+  padding: 0 14px 10px;
+}
+
+.live-win-close {
+  padding: 3px 11px;
+}
+
+.live-win-badge,
+.live-win-msg {
+  font-size: 11px;
+  border-radius: 980px;
+  letter-spacing: 0;
+}
+
+/* Layer grid: two roomy columns so labels never wrap. */
+.bottom-controls {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+@media (min-width: 380px) {
+  .bottom-controls {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+.bottom-controls .cc-btn {
+  white-space: nowrap;
+  padding: 8px 10px;
+  text-align: center;
+}
+
+#plane-search-go {
+  background: var(--ap-blue);
+  color: #fff;
+}
+
+#plane-search-go:hover {
+  background: #4aa8ff;
+}
+
+.plane-stat strong {
+  white-space: nowrap;
+  font-size: 14px;
+}
+
+/* â€”â€” Liquid glass â€”â€” */
+:root {
+  --lg-tint: rgba(255, 255, 255, 0.1);
+  --lg-edge: rgba(255, 255, 255, 0.5);
+  --lg-sheen: linear-gradient(115deg, transparent 32%, rgba(255, 255, 255, 0.38) 50%, transparent 68%);
+}
+
+/* Shared glass recipe: translucent body, bright top edge, soft inner glow, specular sheen that sweeps on hover. */
+.command-header,
+.cc-btn,
+.plane-filter-btn,
+.source-btn,
+.plane-link-btn,
+.live-win-btn {
+  background-image:
+    var(--lg-sheen),
+    linear-gradient(160deg, rgba(255, 255, 255, 0.24), rgba(255, 255, 255, 0.04) 45%, rgba(255, 255, 255, 0.12));
+  background-color: var(--lg-tint);
+  background-size: 260% 100%, 100% 100%;
+  background-position: 130% 0, 0 0;
+  background-repeat: no-repeat;
+  -webkit-backdrop-filter: blur(16px) saturate(190%) brightness(1.06);
+  backdrop-filter: blur(16px) saturate(190%) brightness(1.06);
+  box-shadow:
+    inset 0 1px 0 var(--lg-edge),
+    inset 0 -1px 0 rgba(255, 255, 255, 0.08),
+    inset 0 0 0 1px rgba(255, 255, 255, 0.13),
+    inset 0 -8px 14px rgba(255, 255, 255, 0.04),
+    0 6px 18px rgba(0, 0, 0, 0.28);
+  transition:
+    background-position 0.9s var(--ap-ease),
+    background-color 0.25s var(--ap-ease),
+    color 0.25s var(--ap-ease),
+    transform 0.2s var(--ap-ease),
+    box-shadow 0.25s var(--ap-ease),
+    opacity 0.25s var(--ap-ease);
+}
+
+.cc-btn:hover,
+.plane-filter-btn:hover,
+.source-btn:hover,
+.plane-link-btn:hover,
+.live-win-btn:hover:not(:disabled) {
+  background-color: rgba(255, 255, 255, 0.16);
+  background-position: -30% 0, 0 0;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.7),
+    inset 0 0 0 1px rgba(255, 255, 255, 0.2),
+    inset 0 -8px 14px rgba(255, 255, 255, 0.06),
+    0 8px 22px rgba(0, 0, 0, 0.32);
+}
+
+/* A switched-on layer is blue glass rather than a flat fill. */
+.cc-btn.is-on,
+.source-btn.active,
+.live-win-btn.active {
+  background-color: rgba(41, 151, 255, 0.78);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.6),
+    inset 0 0 0 1px rgba(255, 255, 255, 0.25),
+    inset 0 -10px 16px rgba(0, 113, 227, 0.35),
+    0 6px 22px rgba(41, 151, 255, 0.35);
+}
+
+.cc-btn.is-on:hover,
+.source-btn.active:hover,
+.live-win-btn.active:hover {
+  background-color: rgba(74, 168, 255, 0.85);
+}
+
+#plane-search-go {
+  background-color: rgba(41, 151, 255, 0.78);
+}
+
+/* The top bar: a floating glass capsule. */
+.command-header {
+  flex: 0 0 54px;
+  margin: 10px 10px 0;
+  padding: 0 18px 0 12px;
+  border-radius: 27px;
+  background-position: 130% 0, 0 0;
+  color: var(--cc-text);
+  -webkit-backdrop-filter: blur(22px) saturate(200%) brightness(1.08);
+  backdrop-filter: blur(22px) saturate(200%) brightness(1.08);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.6),
+    inset 0 -1px 0 rgba(255, 255, 255, 0.1),
+    inset 0 0 0 1px rgba(255, 255, 255, 0.16),
+    inset 0 -14px 22px rgba(255, 255, 255, 0.05),
+    0 12px 36px rgba(0, 0, 0, 0.35);
+  transition:
+    background-color 0.5s var(--ap-ease),
+    box-shadow 0.5s var(--ap-ease);
+}
+
+.command-header:hover {
+  background-position: -30% 0, 0 0;
+  transition: background-position 1.4s var(--ap-ease), background-color 0.5s var(--ap-ease);
+}
+
+.command-header-left {
+  gap: 12px;
+}
+
+.command-brand,
+.command-classification,
+.command-status {
+  transition: color 0.5s var(--ap-ease);
+}
+
+/* Over bright imagery (snow, desert, cloud) the bar turns pale and its text turns dark. */
+.command-header[data-tone="light"] {
+  --lg-tint: rgba(255, 255, 255, 0.34);
+  --lg-edge: rgba(255, 255, 255, 0.9);
+  color: #1d1d1f;
+}
+
+.command-header[data-tone="light"] .command-brand {
+  color: #1d1d1f;
+}
+
+.command-header[data-tone="light"] .command-classification,
+.command-header[data-tone="light"] .command-status {
+  color: rgba(29, 29, 31, 0.62);
+}
+
+/* Tagline: "Geospatial" follows the bar's tone (white on dark imagery, near-black on bright); "LIVE" is red and breathes. */
+.command-tagline {
+  color: var(--cc-text);
+  font-weight: 500;
+  transition: color 0.5s var(--ap-ease);
+}
+
+.command-header[data-tone="light"] .command-tagline {
+  color: #1d1d1f;
+}
+
+.command-live,
+.command-header[data-tone="light"] .command-live {
+  color: #ff453a;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  animation: ap-live 2.4s ease-in-out infinite;
+}
+
+@keyframes ap-live {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.55;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .command-live {
+    animation: none;
+  }
+}
+
+/* Notable-owner chip: gold-to-rose shimmer */
+.plane-chip-notable {
+  color: #fff;
+  text-decoration: none;
+  background-image: linear-gradient(110deg, rgba(255, 200, 100, 0.35), rgba(255, 120, 190, 0.35), rgba(255, 200, 100, 0.35));
+  background-size: 200% 100%;
+  animation: ap-shimmer 4s linear infinite;
+}
+
+a.plane-chip-notable:hover {
+  text-decoration: underline;
+}
+
+@keyframes ap-shimmer {
+  to {
+    background-position: -200% 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .plane-chip-notable {
+    animation: none;
+  }
+}
+
+/* Close button on the selection card */
+.intel-card-close {
+  flex: 0 0 auto;
+  width: 24px;
+  height: 24px;
+  margin-left: 4px;
+  border: 0;
+  border-radius: 50%;
+  background: var(--ap-fill);
+  color: var(--cc-text);
+  font: 400 16px/1 var(--cc-sans);
+  cursor: pointer;
+  transition: background-color 0.2s var(--ap-ease), transform 0.2s var(--ap-ease);
+}
+
+.intel-card-close:hover {
+  background: var(--ap-fill-hover);
+}
+
+.intel-card-close:active {
+  transform: scale(0.92);
+}
+
+/* More layers panel */
+.more-layers-toggle {
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
+  align-items: center;
+  border: 0;
+  background: none;
+  cursor: pointer;
+  text-align: left;
+}
+
+.more-layers-caret {
+  color: var(--cc-muted);
+  transition: transform 0.25s var(--ap-ease);
+}
+
+.more-layers-toggle[aria-expanded="true"] .more-layers-caret {
+  transform: rotate(180deg);
+}
+
+.more-layers-body {
+  display: grid;
+  gap: 10px;
+  margin-top: 4px;
+}
+
+.more-layers-body .layer-group-title {
+  padding-top: 8px;
+  border-top: 1px solid var(--cc-line);
+}
+
+.layer-group-title {
+  margin-bottom: 4px;
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--cc-muted);
+}
+
+.layer-group-row {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 6px;
+}
+
+.layer-cell {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+
+.layer-chip {
+  font-family: var(--cc-sans);
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: -0.008em;
+  padding: 7px 10px;
+  border: 0;
+  border-radius: 980px;
+  background-color: #3a3a3d;
+  background-image: linear-gradient(160deg, rgba(255, 255, 255, 0.24), rgba(255, 255, 255, 0.04) 45%, rgba(255, 255, 255, 0.12));
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.5),
+    inset 0 0 0 1px rgba(255, 255, 255, 0.13),
+    0 6px 18px rgba(0, 0, 0, 0.28);
+  color: var(--cc-text);
+  cursor: pointer;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  transition: background-color 0.25s var(--ap-ease), transform 0.2s var(--ap-ease);
+}
+
+.layer-chip:hover {
+  background-color: #4c4c50;
+}
+
+.layer-chip:active {
+  transform: scale(0.96);
+}
+
+.layer-chip.is-on {
+  background-color: #2997ff;
+  color: #fff;
+}
+
+.layer-chip.is-busy {
+  opacity: 0.75;
+}
+
+.layer-status {
+  min-height: 12px;
+  padding: 0 8px;
+  font-size: 10px;
+  color: var(--cc-muted);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.layer-extras {
+  position: fixed;
+  left: 50%;
+  bottom: 84px;
+  z-index: 26;
+  display: grid;
+  gap: 10px;
+  width: min(380px, calc(100vw - 32px));
+  max-height: calc(100vh - 220px);
+  overflow-y: auto;
+  transform: translateX(-50%);
+  pointer-events: none;
+}
+
+.layer-extras > * {
+  pointer-events: auto;
+}
+
+.layer-extras:empty {
+  display: none;
+}
+
+/* Layer details card */
+.layer-card {
+  position: fixed;
+  right: 16px;
+  bottom: 16px;
+  z-index: 40;
+  width: min(320px, calc(100vw - 32px));
+  max-height: 60vh;
+  overflow-y: auto;
+  padding: 14px 16px;
+  border-radius: 18px;
+  background: rgba(29, 29, 31, 0.86);
+  -webkit-backdrop-filter: blur(24px);
+  backdrop-filter: blur(24px);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.28),
+    inset 0 0 0 1px rgba(255, 255, 255, 0.08),
+    0 14px 44px rgba(0, 0, 0, 0.4);
+  color: var(--cc-text);
+  animation: ap-rise 0.35s var(--ap-ease) both;
+}
+
+.layer-card-head {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.layer-card-kicker {
+  font-size: 11px;
+  color: var(--cc-muted);
+}
+
+.layer-card-title {
+  font-size: 17px;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  line-height: 1.2;
+}
+
+.layer-card-sub {
+  margin-top: 2px;
+  font-size: 12px;
+  color: var(--cc-muted);
+}
+
+.layer-card-close {
+  flex: 0 0 auto;
+  align-self: flex-start;
+  width: 26px;
+  height: 26px;
+  border: 0;
+  border-radius: 50%;
+  background: var(--ap-fill);
+  color: var(--cc-text);
+  font-size: 16px;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.layer-card-rows {
+  margin-top: 10px;
+  display: grid;
+}
+
+.layer-card-row {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 6px 0;
+  border-top: 1px solid var(--cc-line);
+  font-size: 13px;
+}
+
+.layer-card-row span {
+  color: var(--cc-muted);
+}
+
+.layer-card-row strong {
+  font-weight: 500;
+  text-align: right;
+  word-break: break-word;
+}
+
+.layer-card-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: 10px;
+}
+
+.layer-card-btn,
+.layer-card-link {
+  padding: 6px 12px;
+  border: 0;
+  border-radius: 980px;
+  background: rgba(41, 151, 255, 0.14);
+  color: var(--ap-blue);
+  font: 500 12px var(--cc-sans);
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.layer-card-btn.primary {
+  background: var(--ap-blue);
+  color: #fff;
+}
+
+.layer-card-btn:hover,
+.layer-card-link:hover {
+  background: rgba(41, 151, 255, 0.26);
+}
+
+.layer-card-btn.primary:hover {
+  background: #4aa8ff;
+}
+
+/* Floating helper panels (weather timeline, radio player, directions, ...) */
+.layer-panel {
+  padding: 12px 14px;
+  border-radius: 18px;
+  background: rgba(29, 29, 31, 0.82);
+  -webkit-backdrop-filter: blur(24px);
+  backdrop-filter: blur(24px);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.28),
+    inset 0 0 0 1px rgba(255, 255, 255, 0.08),
+    0 10px 40px rgba(0, 0, 0, 0.35);
+  animation: ap-rise 0.35s var(--ap-ease) both;
+}
+
+.layer-panel {
+  position: relative;
+}
+
+.layer-panel > .layer-panel-title {
+  padding-right: 30px;
+}
+
+.panel-close {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  z-index: 1;
+  width: 24px;
+  height: 24px;
+  border: 0;
+  border-radius: 50%;
+  background: var(--ap-fill);
+  color: var(--cc-text);
+  font: 400 16px/1 var(--cc-sans);
+  cursor: pointer;
+  transition: background-color 0.2s var(--ap-ease), transform 0.2s var(--ap-ease);
+}
+
+.panel-close:hover {
+  background: var(--ap-fill-hover);
+}
+
+.panel-close:active {
+  transform: scale(0.92);
+}
+
+.layer-panel-title {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--cc-text);
+  margin-bottom: 6px;
+}
+
+.layer-panel-note {
+  font-size: 11px;
+  color: var(--cc-muted);
+  margin: 4px 0 0;
+}
+
+/* Notes for layers that need a key the person hasn't added (src/keyHints.ts); the box collapses when empty. */
+.key-hints:empty {
+  display: none;
+}
+.key-hint a {
+  color: var(--ap-blue);
+}
+
+.layer-panel input[type="range"] {
+  width: 100%;
+  accent-color: var(--ap-blue);
+}
+
+.layer-panel-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* Time machine */
+.hist-panel {
+  max-height: min(62vh, 560px);
+  overflow-y: auto;
+}
+
+.hist-select,
+.hist-date,
+.hist-year {
+  border: 0;
+  border-radius: 10px;
+  background: var(--ap-fill);
+  color: var(--cc-text);
+  font: 500 12px var(--cc-sans);
+  padding: 7px 10px;
+  color-scheme: dark;
+}
+
+.hist-select {
+  width: 100%;
+  margin-bottom: 10px;
+}
+
+.hist-year {
+  width: 74px;
+}
+
+.hist-check {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 10px 0 4px;
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+}
+
+.hist-check input {
+  accent-color: var(--ap-blue);
+}
+
+.hist-day {
+  margin-left: auto;
+  font-weight: 600;
+}
+
+.hist-row {
+  flex-wrap: wrap;
+  margin-top: 6px;
+}
+
+/* Place search in the top bar */
+.command-header-right {
+  gap: 10px;
+}
+
+.loc-search {
+  position: relative;
+  display: flex;
+  align-items: center;
+  height: 36px;
+  border-radius: 980px;
+  background: var(--ap-fill);
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.1);
+  transition: background-color 0.25s var(--ap-ease), box-shadow 0.25s var(--ap-ease);
+}
+
+.loc-search:focus-within {
+  background: rgba(255, 255, 255, 0.16);
+  box-shadow: 0 0 0 3px rgba(41, 151, 255, 0.5);
+}
+
+.loc-search-btn {
+  flex: 0 0 auto;
+  display: grid;
+  place-items: center;
+  width: 36px;
+  height: 36px;
+  border: 0;
+  border-radius: 50%;
+  background: transparent;
+  color: inherit;
+  cursor: pointer;
+}
+
+.loc-search input {
+  width: clamp(150px, 18vw, 260px);
+  height: 100%;
+  padding: 0 14px 0 0;
+  border: 0;
+  outline: 0;
+  background: transparent;
+  color: inherit;
+  font: 500 13px var(--cc-sans);
+  letter-spacing: -0.01em;
+}
+
+.loc-search input::placeholder {
+  color: var(--cc-muted);
+}
+
+.loc-locate {
+  margin-left: -4px;
+  color: var(--ap-blue);
+}
+
+.loc-locate.is-busy {
+  animation: ap-live 1s ease-in-out infinite;
+}
+
+.loc-search.compact .loc-locate {
+  display: none;
+}
+
+.loc-suggest {
+  top: calc(100% + 12px);
+  left: 0;
+  width: max(100%, 340px);
+}
+
+/* While Directions is open the box shrinks to its magnifier; clicking it drops the box down under the bar. */
+.loc-search.compact {
+  background: var(--ap-fill);
+}
+
+.loc-search.compact input {
+  display: none;
+}
+
+.loc-search.compact.open input {
+  display: block;
+  position: absolute;
+  top: calc(100% + 10px);
+  right: 0;
+  z-index: 41;
+  width: 320px;
+  height: 40px;
+  padding: 0 16px;
+  border-radius: 980px;
+  background: rgba(29, 29, 31, 0.94);
+  -webkit-backdrop-filter: blur(24px);
+  backdrop-filter: blur(24px);
+  box-shadow:
+    inset 0 0 0 1px rgba(255, 255, 255, 0.14),
+    0 12px 36px rgba(0, 0, 0, 0.45),
+    0 0 0 3px rgba(41, 151, 255, 0.5);
+  color: var(--cc-text);
+}
+
+.loc-search.compact .loc-suggest {
+  top: calc(100% + 60px);
+  left: auto;
+  right: 0;
+  width: 320px;
+}
+
+.command-header[data-tone="light"] .loc-search input::placeholder {
+  color: rgba(29, 29, 31, 0.55);
+}
+
+@media (max-width: 720px) {
+  .loc-search {
+    flex: 1 1 100%;
+  }
+  .loc-search input {
+    width: 100%;
+  }
+}
+
+/* Directions search in the top bar */
+.command-header-right {
+  position: relative;
+  flex: 1 1 auto;
+  max-width: none;
+  justify-content: flex-end;
+}
+
+.dir-search {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  animation: ap-rise 0.3s var(--ap-ease) both;
+}
+
+.dir-field {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 0 14px;
+  height: 36px;
+  border-radius: 980px;
+  background: var(--ap-fill);
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.1);
+  transition: background-color 0.25s var(--ap-ease), box-shadow 0.25s var(--ap-ease);
+}
+
+.dir-field:focus-within {
+  background: rgba(255, 255, 255, 0.16);
+  box-shadow: 0 0 0 3px rgba(41, 151, 255, 0.5);
+}
+
+.dir-field input {
+  width: clamp(120px, 15vw, 230px);
+  border: 0;
+  outline: 0;
+  background: transparent;
+  color: inherit;
+  font: 500 13px var(--cc-sans);
+  letter-spacing: -0.01em;
+}
+
+.dir-field input::placeholder {
+  color: var(--cc-muted);
+}
+
+.dir-dot {
+  flex: 0 0 auto;
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+}
+
+.dir-dot.from {
+  background: #30d158;
+}
+
+.dir-dot.to {
+  background: #ff453a;
+}
+
+.dir-swap {
+  width: 30px;
+  height: 30px;
+  border: 0;
+  border-radius: 50%;
+  background: var(--ap-fill);
+  color: inherit;
+  font-size: 14px;
+  cursor: pointer;
+  transition: transform 0.25s var(--ap-ease), background-color 0.25s var(--ap-ease);
+}
+
+.dir-swap:hover {
+  background: var(--ap-fill-hover);
+  transform: rotate(180deg);
+}
+
+.dir-modes-inline {
+  display: flex;
+  padding: 3px;
+  border-radius: 980px;
+  background: var(--ap-fill);
+}
+
+.dir-modes-inline button {
+  padding: 5px 11px;
+  border: 0;
+  border-radius: 980px;
+  background: transparent;
+  color: inherit;
+  font: 600 12px var(--cc-sans);
+  cursor: pointer;
+  transition: background-color 0.25s var(--ap-ease), color 0.25s var(--ap-ease);
+}
+
+.dir-modes-inline button.active {
+  background: var(--ap-blue);
+  color: #fff;
+}
+
+.dir-avoid {
+  height: 36px;
+  padding: 0 14px;
+  border: 0;
+  border-radius: 980px;
+  background: var(--ap-fill);
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.1);
+  color: inherit;
+  font: 600 12px var(--cc-sans);
+  white-space: nowrap;
+  cursor: pointer;
+  transition: background-color 0.25s var(--ap-ease), color 0.25s var(--ap-ease);
+}
+
+.dir-avoid:hover {
+  background: var(--ap-fill-hover);
+}
+
+.dir-avoid.active {
+  background: #ff9f0a;
+  color: #1d1d1f;
+}
+
+.dir-avoid-note {
+  line-height: 1.35;
+}
+
+.dir-suggest {
+  position: absolute;
+  top: calc(100% + 12px);
+  z-index: 40;
+  display: grid;
+  max-height: 300px;
+  overflow-y: auto;
+  padding: 6px;
+  border-radius: 16px;
+  background: rgba(29, 29, 31, 0.94);
+  -webkit-backdrop-filter: blur(24px);
+  backdrop-filter: blur(24px);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.2),
+    inset 0 0 0 1px rgba(255, 255, 255, 0.08),
+    0 14px 40px rgba(0, 0, 0, 0.45);
+  color: var(--cc-text);
+}
+
+.dir-suggest-row {
+  padding: 8px 10px;
+  border: 0;
+  border-radius: 10px;
+  background: transparent;
+  color: inherit;
+  font: 13px var(--cc-sans);
+  text-align: left;
+  cursor: pointer;
+}
+
+.dir-suggest-row:hover,
+.dir-suggest-row:focus {
+  outline: 0;
+  background: var(--ap-fill-hover);
+}
+
+.dir-suggest-head {
+  padding: 8px 10px 3px;
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--cc-muted);
+}
+
+.dir-suggest-row {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+}
+
+.dir-suggest-row small {
+  font-size: 11px;
+  color: var(--cc-muted);
+}
+
+.dir-suggest-empty {
+  padding: 10px;
+  font-size: 12px;
+  color: var(--cc-muted);
+}
+
+/* The bar's text turns dark over bright imagery; keep the search legible there too. */
+.command-header[data-tone="light"] .dir-field input::placeholder {
+  color: rgba(29, 29, 31, 0.55);
+}
+
+@media (max-width: 1100px) {
+  .dir-modes-inline {
+    display: none;
+  }
+}
+
+@media (max-width: 720px) {
+  .command-header-right {
+    flex: 0 0 100%;
+  }
+  .dir-search {
+    flex-wrap: wrap;
+    width: 100%;
+  }
+  .dir-field {
+    flex: 1 1 140px;
+  }
+  .dir-field input {
+    width: 100%;
+  }
+}
+
+/* Tracking pill */
+.track-pill {
+  position: fixed;
+  top: 78px;
+  left: 50%;
+  z-index: 24;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+  justify-content: center;
+  max-width: min(520px, calc(100vw - 620px));
+  padding: 6px 8px 6px 16px;
+  border-radius: 980px;
+  background: rgba(29, 29, 31, 0.82);
+  -webkit-backdrop-filter: blur(24px);
+  backdrop-filter: blur(24px);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.28),
+    inset 0 0 0 1px rgba(255, 255, 255, 0.08),
+    0 10px 30px rgba(0, 0, 0, 0.35);
+  transform: translateX(-50%);
+  animation: ap-rise 0.3s var(--ap-ease) both;
+}
+
+.track-label {
+  font-size: 13px;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.track-btn {
+  padding: 5px 12px;
+  border: 0;
+  border-radius: 980px;
+  background: rgba(41, 151, 255, 0.18);
+  color: var(--ap-blue);
+  font: 600 12px var(--cc-sans);
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.track-btn:hover {
+  background: rgba(41, 151, 255, 0.3);
+}
+
+.track-btn.is-on {
+  background: var(--ap-blue);
+  color: #fff;
+}
+
+.track-note {
+  padding-right: 8px;
+  font-size: 11px;
+  color: var(--cc-muted);
+}
+
+/* Docked to the bottom edge on every screen size so it never floats over the map. */
+.track-pill {
+  top: auto;
+  bottom: max(16px, env(safe-area-inset-bottom));
+}
+
+@media (max-width: 1100px) {
+  .track-pill {
+    max-width: calc(100vw - 32px);
+  }
+}
+
+/* Phones: a full-width bar â€” name on top, then Follow / 24 h path as a two-segment switch. */
+@media (max-width: 700px) {
+  .track-pill {
+    left: 12px;
+    right: 12px;
+    bottom: max(12px, env(safe-area-inset-bottom));
+    max-width: none;
+    transform: none;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+    padding: 10px;
+    border-radius: 22px;
+  }
+  .track-label {
+    grid-column: 1 / -1;
+    text-align: center;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .track-note {
+    grid-column: 1 / -1;
+    padding: 0;
+    text-align: center;
+  }
+  .track-btn {
+    padding: 9px 10px;
+    border-radius: 12px;
+    text-align: center;
+    font-size: 13px;
+  }
+  /* Only one button (satellite/vessel): let it span the row. */
+  .track-btn:only-of-type {
+    grid-column: 1 / -1;
+  }
+}
+
+.dir-points {
+  flex-wrap: wrap;
+  margin-bottom: 6px;
+}
+
+.dir-modes {
+  margin-bottom: 8px;
+}
+
+.dir-point {
+  flex: 1 1 140px;
+  text-align: left;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.dir-point.is-picking {
+  outline: 2px solid var(--ap-blue);
+}
+
+.dir-steps {
+  display: grid;
+  gap: 1px;
+  margin-top: 6px;
+  max-height: 200px;
+  overflow-y: auto;
+}
+
+.dir-step {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  padding: 6px 8px;
+  border: 0;
+  border-radius: 8px;
+  background: transparent;
+  color: var(--cc-text);
+  font: 12px var(--cc-sans);
+  text-align: left;
+  cursor: pointer;
+}
+
+.dir-step:hover {
+  background: var(--ap-fill-hover);
+}
+
+.dir-step small {
+  flex: 0 0 auto;
+  color: var(--cc-muted);
+}
+
+.launch-list {
+  display: grid;
+  gap: 2px;
+  margin-top: 8px;
+  max-height: 260px;
+  overflow-y: auto;
+}
+
+.launch-row {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 1px;
+  padding: 7px 10px;
+  border: 0;
+  border-radius: 10px;
+  background: transparent;
+  color: var(--cc-text);
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+
+.launch-row:hover {
+  background: var(--ap-fill-hover);
+}
+
+.launch-row strong {
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.launch-row small {
+  font-size: 11px;
+  color: var(--cc-muted);
+}
+
+.radio-now {
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--cc-text);
+  margin-bottom: 2px;
+}
+
+/* Wind overlay */
+.wind-canvas {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  pointer-events: none;
+}
+
+.wind-legend-bar {
+  height: 8px;
+  border-radius: 4px;
+  background: linear-gradient(90deg, rgb(120, 190, 255), rgb(150, 235, 255) 20%, #fff 40%, rgb(255, 214, 90) 65%, rgb(255, 110, 80));
+}
+
+.wind-legend-labels {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 3px;
+  font-size: 10px;
+  color: var(--cc-muted);
+}
+
+/* ALPR legend */
+.alpr-legend {
+  display: grid;
+  gap: 2px;
+  margin: 8px 0 4px;
+}
+
+.alpr-legend-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 2px 4px;
+  font-size: 12px;
+  color: var(--cc-text);
+}
+
+.alpr-legend-row img {
+  flex: 0 0 auto;
+}
+
+.alpr-legend-row span {
+  flex: 1;
+}
+
+.alpr-legend-row small {
+  color: var(--cc-muted);
+  font-size: 11px;
+}
+
+/* Fly mode */
+.fly-mode {
+  position: absolute;
+  left: 50%;
+  bottom: 22px;
+  z-index: 25;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  transform: translateX(-50%);
+  pointer-events: none;
+}
+
+.fly-mode > * {
+  pointer-events: auto;
+}
+
+.fly-mode-btn {
+  font-family: var(--cc-sans);
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  padding: 10px 22px;
+  border: 0;
+  border-radius: 980px;
+  color: #fff;
+  background-color: rgba(58, 58, 61, 0.92);
+  background-image: linear-gradient(160deg, rgba(255, 255, 255, 0.24), rgba(255, 255, 255, 0.04) 45%, rgba(255, 255, 255, 0.12));
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.5),
+    inset 0 0 0 1px rgba(255, 255, 255, 0.14),
+    0 10px 30px rgba(0, 0, 0, 0.4);
+  cursor: pointer;
+  transition: transform 0.2s var(--ap-ease), background-color 0.25s var(--ap-ease);
+}
+
+.fly-mode-btn:hover {
+  background-color: rgba(76, 76, 80, 0.95);
+}
+
+.fly-mode-btn:active {
+  transform: scale(0.96);
+}
+
+.fly-mode-btn.is-on {
+  background-color: #2997ff;
+}
+
+.fly-hint {
+  padding: 10px 16px;
+  border-radius: 18px;
+  background: rgba(29, 29, 31, 0.82);
+  -webkit-backdrop-filter: blur(24px);
+  backdrop-filter: blur(24px);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.28),
+    inset 0 0 0 1px rgba(255, 255, 255, 0.08),
+    0 10px 40px rgba(0, 0, 0, 0.35);
+  animation: ap-rise 0.4s var(--ap-ease) both;
+}
+
+.fly-keys {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 6px 16px;
+  font-size: 12px;
+  color: var(--cc-muted);
+}
+
+.fly-keys kbd {
+  display: inline-block;
+  min-width: 18px;
+  margin-right: 3px;
+  padding: 1px 6px;
+  border-radius: 6px;
+  background: var(--ap-fill-hover);
+  color: var(--cc-text);
+  font: 600 11px var(--cc-sans);
+  text-align: center;
+}
+
+.fly-stats {
+  margin-top: 6px;
+  text-align: center;
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--cc-text);
+}
+
+@media (max-width: 720px) {
+  .fly-mode {
+    bottom: 12px;
+  }
+  .fly-hint {
+    display: none;
+  }
+}
+
+/* Notable aircraft list */
+.notable-list {
+  margin-top: 8px;
+}
+
+.notable-list-toggle {
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 8px;
+  padding: 6px 2px;
+  border: 0;
+  background: none;
+  color: var(--cc-text);
+  font: inherit;
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+}
+
+.notable-list-toggle > span:first-child {
+  white-space: nowrap;
+}
+
+.notable-list-count {
+  text-align: right;
+  font-size: 11px;
+  font-weight: 400;
+  color: var(--cc-muted);
+}
+
+.notable-list-body {
+  display: grid;
+  gap: 2px;
+  max-height: 240px;
+  overflow-y: auto;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(255, 255, 255, 0.25) transparent;
+}
+
+.notable-row {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 1px;
+  padding: 6px 10px;
+  border: 0;
+  border-radius: 10px;
+  background: transparent;
+  color: var(--cc-muted);
+  font: inherit;
+  text-align: left;
+  cursor: default;
+  transition: background-color 0.2s var(--ap-ease);
+}
+
+.notable-row .notable-owner {
+  font-size: 13px;
+  color: var(--cc-text);
+  opacity: 0.6;
+}
+
+.notable-row small {
+  font-size: 11px;
+}
+
+.notable-row.is-live {
+  cursor: pointer;
+}
+
+.notable-row.is-live .notable-owner {
+  opacity: 1;
+}
+
+.notable-row.is-live small {
+  color: #ffc864;
+}
+
+.notable-row.is-live:hover {
+  background: var(--ap-fill-hover);
+}
+
+/* Aircraft operator line */
+.plane-operator {
+  margin: 0;
+  font-size: 13px;
+  color: var(--cc-text);
+}
+
+.plane-operator-label,
+.plane-operator-dot {
+  color: var(--cc-muted);
+}
+
+.plane-operator-link {
+  color: var(--ap-blue);
+  text-decoration: none;
+}
+
+.plane-operator-link:hover {
+  text-decoration: underline;
+}
+
+/* â€”â€” Adaptive logo â€”â€” */
+.orbit-logo {
+  position: relative;
+  flex: 0 0 auto;
+  width: 38px;
+  height: 38px;
+}
+
+.orbit-logo-img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  pointer-events: none;
+  transition: opacity 0.5s var(--ap-ease);
+}
+
+.command-header[data-tone="dark"] .orbit-logo-img.for-light,
+.command-header[data-tone="light"] .orbit-logo-img.for-dark {
+  opacity: 0;
+}
+
+.command-header[data-tone="dark"] .orbit-logo-img.for-dark,
+.command-header[data-tone="light"] .orbit-logo-img.for-light {
+  opacity: 1;
+}
+
+/* Bring the glass edge to the floating panels too. */
+.cc-module,
+.intel-card {
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.28),
+    inset 0 0 0 1px rgba(255, 255, 255, 0.08),
+    0 10px 40px rgba(0, 0, 0, 0.35);
+}
+
+/* On desktop the bar floats over the map (so the glass really refracts it and the logo can read the backdrop). */
+@media (min-width: 721px) {
+  .command-header {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    right: 10px;
+    margin: 0;
+    height: 54px;
+  }
+  .map-overlay {
+    top: 74px;
+  }
+}
+
+@media (max-width: 720px) {
+  .command-header {
+    margin: 6px 6px 0;
+    border-radius: 22px;
+  }
+  .orbit-logo {
+    width: 32px;
+    height: 32px;
+  }
+}
+
+/*
+ * Flicker fix. Each pill used to run its own backdrop-filter while sitting inside a panel that already blurs the map;
+ * nested backdrop filters over a canvas that keeps re-rendering make the browser re-composite every button each frame.
+ * The panels keep the blur; the buttons keep the glass look through gradients and highlights only.
+ */
+.cc-btn,
+.plane-filter-btn,
+.source-btn,
+.plane-link-btn,
+.live-win-btn {
+  -webkit-backdrop-filter: none;
+  backdrop-filter: none;
+}
+
+/*
+ * Second flicker source: switched-on buttons (SAT, AC ...) were translucent blue sitting on a blurred copy of a map
+ * that redraws constantly, so their colour pulsed with whatever was moving underneath. Make them opaque, and make the
+ * panels themselves more opaque so the live map can't shimmer through.
+ */
+.cc-btn.is-on,
+.source-btn.active,
+.live-win-btn.active,
+#plane-search-go {
+  background-color: #2997ff;
+}
+
+.cc-btn.is-on:hover,
+.source-btn.active:hover,
+.live-win-btn.active:hover,
+#plane-search-go:hover {
+  background-color: #4aa8ff;
+}
+
+.cc-btn,
+.plane-filter-btn,
+.source-btn {
+  background-color: #3a3a3d;
+}
+
+.plane-filter-btn.active {
+  background-color: #4a4a4e;
+}
+
+.cc-btn:hover:not(.is-on),
+.plane-filter-btn:hover,
+.source-btn:hover:not(.active) {
+  background-color: #4c4c50;
+}
+
+.cc-module,
+.intel-card {
+  background: rgba(29, 29, 31, 0.82);
+  -webkit-backdrop-filter: blur(24px);
+  backdrop-filter: blur(24px);
+}
+
+/* Give each blurred surface its own compositor layer so canvas updates don't repaint it. */
+.cc-module,
+.intel-card,
+.command-header,
+.live-win {
+  transform: translateZ(0);
+  will-change: backdrop-filter;
+  isolation: isolate;
+}
+
+/* Slim, quiet scrollbars that match the glass: no track, a soft rounded thumb that brightens on hover. */
+.command-shell *,
+.live-win * {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(255, 255, 255, 0.22) transparent;
+}
+
+.command-shell *::-webkit-scrollbar,
+.live-win *::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+.command-shell *::-webkit-scrollbar-track,
+.live-win *::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.command-shell *::-webkit-scrollbar-thumb,
+.live-win *::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.22);
+  border-radius: 999px;
+  border: 2px solid transparent;
+  background-clip: padding-box;
+}
+
+.command-shell *::-webkit-scrollbar-thumb:hover,
+.live-win *::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.4);
+  background-clip: padding-box;
+}
+
+/* Respect users who ask for less motion. */
+@media (prefers-reduced-motion: reduce) {
+  .sat-info:not(.hidden),
+  .live-win:not(.hidden),
+  #plane-summary:not(.hidden) {
+    animation: none;
+  }
+  .cc-btn,
+  .source-btn,
+  .plane-filter-btn,
+  .live-win-btn,
+  .plane-link-btn,
+  .plane-progress > i {
+    transition: none;
+  }
+}
+
+/* ---- Conflict watch ---- */
+.conf-panel { display: flex; flex-direction: column; gap: 8px; }
+.conf-stats { font-size: 12px; opacity: .8; line-height: 1.4; }
+.conf-asof { display: flex; flex-direction: column; gap: 6px; }
+.conf-tabs { display: flex; gap: 4px; }
+.conf-tabs button { flex: 1; padding: 5px 8px; border-radius: 8px; border: 0; font: inherit; font-size: 12px; color: inherit; background: rgba(120,120,128,.18); cursor: pointer; }
+.conf-tabs button.is-on, .conf-tabs button.active { background: #2997ff; color: #fff; }
+.conf-legend { display: flex; flex-wrap: wrap; gap: 4px 12px; font-size: 11px; opacity: .85; }
+.conf-legend-item { display: inline-flex; align-items: center; gap: 5px; }
+.conf-legend-item i { width: 9px; height: 9px; border-radius: 50%; display: inline-block; }
+.conf-news { display: flex; flex-direction: column; gap: 6px; }
+.conf-news-list { display: flex; flex-direction: column; gap: 6px; max-height: 190px; overflow-y: auto; }
+.conf-news-item { display: flex; flex-direction: column; gap: 2px; padding: 7px 9px; border-radius: 10px; background: rgba(120,120,128,.14); color: inherit; text-decoration: none; font-size: 12px; line-height: 1.3; }
+.conf-news-item:hover { background: rgba(120,120,128,.26); }
+.conf-news-item.static:hover { background: rgba(120,120,128,.14); }
+.conf-news-item span { font-weight: 600; }
+.conf-news-item small { opacity: .65; font-size: 11px; }
+/* Headlines inside the quake / fire details card (src/layers/eventNews.ts) */
+.layer-card-news { margin-top: 10px; padding-top: 8px; border-top: 1px solid var(--cc-line); }
+.layer-card-news-title { font-size: 12px; font-weight: 600; color: var(--cc-muted); margin: 0 0 6px; }
+.layer-card-news .conf-news-list { max-height: none; overflow: visible; }
+.conf-sources { display: flex; flex-direction: column; gap: 4px; }
+.conf-source { font-size: 11px; opacity: .8; }
+
+/* ---- Right-hand column on desktop: details card and layer panels stack under the selection card ---- */
+@media (min-width: 721px) {
+  .map-overlay-right {
+    width: 340px;
+    max-width: 42vw;
+  }
+  .map-overlay-right .sidebar-stack {
+    width: min(var(--intel-card-w), 100%);
+    align-self: flex-end;
+  }
+  .map-overlay-right .layer-card,
+  .map-overlay-right .layer-extras {
+    position: static;
+    transform: none;
+    width: 100%;
+    max-width: 100%;
+    right: auto;
+    left: auto;
+    bottom: auto;
+    box-sizing: border-box;
+  }
+  .map-overlay-right .layer-card {
+    flex: 0 0 auto;
+    max-height: 40vh;
+    pointer-events: auto;
+  }
+  .map-overlay-right .layer-extras {
+    flex: 0 1 auto;
+    min-height: 0;
+    max-height: none;
+    scrollbar-width: none;
+  }
+  .map-overlay-right .layer-extras::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+/* ---- Camera pad (zoom / tilt / north) ---- */
+.nav-pad {
+  position: fixed;
+  z-index: 20;
+  display: flex;
+  gap: 4px;
+  padding: 4px;
+  border-radius: 980px;
+  background: rgba(29, 29, 31, 0.72);
+  -webkit-backdrop-filter: blur(24px);
+  backdrop-filter: blur(24px);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.24),
+    inset 0 0 0 1px rgba(255, 255, 255, 0.08),
+    0 8px 24px rgba(0, 0, 0, 0.3);
+}
+.nav-pad button {
+  display: grid;
+  place-items: center;
+  width: 34px;
+  height: 34px;
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  background: transparent;
+  color: var(--cc-text);
+  font: 500 20px/1 var(--cc-sans);
+  cursor: pointer;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+}
+.nav-pad button:hover {
+  background: rgba(255, 255, 255, 0.12);
+}
+.nav-pad button:active {
+  background: rgba(255, 255, 255, 0.22);
+}
+.nav-pad .nav-needle {
+  transition: transform 0.1s linear;
+}
+@media (min-width: 721px) {
+  .nav-pad {
+    right: 372px;
+    bottom: 16px;
+  }
+}
+@media (max-width: 720px) {
+  .nav-pad {
+    right: 10px;
+    bottom: calc(min(42vh, 320px) + 22px + env(safe-area-inset-bottom, 0px));
+    flex-direction: column;
+    border-radius: 22px;
+  }
+  .nav-pad button {
+    width: 44px;
+    height: 44px;
+  }
+}
+
+
+/* ---- Phones: layer panels become a bottom sheet, details card joins the top stack ---- */
+@media (max-width: 720px) {
+  .layer-extras {
+    left: 8px;
+    right: 8px;
+    width: auto;
+    transform: none;
+    bottom: calc(10px + env(safe-area-inset-bottom, 0px));
+    max-height: min(60vh, 520px);
+    scrollbar-width: none;
+  }
+  .layer-extras::-webkit-scrollbar {
+    display: none;
+  }
+  .layer-card {
+    position: static;
+    width: 100%;
+    max-width: 100%;
+    max-height: 30vh;
+    box-sizing: border-box;
+    pointer-events: auto;
+  }
+  /* While a panel covers the bottom, park the camera pad under the header instead. */
+  body:has(.layer-extras:not(:empty)) .nav-pad {
+    top: 100px;
+    bottom: auto;
+  }
+}
+
+
+
+
+@media (max-width: 720px) {
+  /* The selection / details cards take the top of the screen; pinch still zooms while they're open. */
+  body:has(#sat-info:not(.hidden)) .nav-pad,
+  body:has(#layer-card:not(.hidden)) .nav-pad {
+    display: none;
+  }
+}
+
+/* ---- Phones: directions bar is a tidy stack, and the camera pad steps aside for any open panel ---- */
+@media (max-width: 720px) {
+  .loc-search.compact {
+    display: none;
+  }
+  .dir-search {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 6px;
+  }
+  .dir-search .dir-field {
+    grid-column: 1 / -1;
+  }
+  .dir-search .dir-swap {
+    justify-self: start;
+    grid-column: 1;
+  }
+  .dir-search .dir-avoid {
+    grid-column: 2;
+  }
+  .dir-search .dir-suggest {
+    grid-column: 1 / -1;
+  }
+  body:has(.layer-extras:not(:empty)) .nav-pad {
+    display: none;
+  }
+}
+
+/* =====================================================================================================
+   Phone menu bar: Map / Layers / light-dark, with sheets that drop out of the bar's bottom edge
+   ===================================================================================================== */
+.menu-bar {
+  display: none;
+}
+.menu-sheet {
+  display: none;
+}
+
+@media (max-width: 720px) {
+  .command-header-left {
+    flex: 1 1 auto;
+    min-width: 0;
+  }
+  .menu-bar {
+    display: flex;
+    gap: 6px;
+    margin-left: auto;
+    align-items: center;
+  }
+  .menu-bar button {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    height: 34px;
+    padding: 0 12px;
+    border: 0;
+    border-radius: 980px;
+    background: rgba(255, 255, 255, 0.12);
+    color: inherit;
+    font: 600 13px var(--cc-sans);
+    cursor: pointer;
+    touch-action: manipulation;
+    -webkit-tap-highlight-color: transparent;
+    transition: background-color 0.25s var(--ap-ease), transform 0.2s var(--ap-ease), color 0.25s var(--ap-ease);
+  }
+  .menu-bar button:active {
+    transform: scale(0.94);
+  }
+  .menu-bar button.menu-icon-only {
+    width: 34px;
+    padding: 0;
+    justify-content: center;
+  }
+  .menu-bar button.is-open,
+  .menu-bar button[aria-pressed="true"] {
+    background: #2997ff;
+    color: #fff;
+  }
+
+  /* Sheets: closed = tucked up under the bar, open = dropped out of its bottom edge. */
+  .menu-sheet,
+  .map-overlay-left {
+    display: block;
+    position: fixed;
+    top: var(--bar-bottom, 96px);
+    bottom: auto;
+    left: 8px;
+    right: 8px;
+    z-index: 30;
+    max-height: calc(100dvh - var(--bar-bottom, 96px) - 16px);
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    transform-origin: 50% 0;
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    transform: translateY(-14px) scale(0.94);
+    transition:
+      opacity 0.22s var(--ap-ease),
+      transform 0.34s cubic-bezier(0.2, 0.9, 0.25, 1.1),
+      visibility 0s linear 0.34s;
+  }
+  body.menu-map-open .menu-sheet,
+  body.menu-layers-open .map-overlay-left {
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+    transform: none;
+    transition-delay: 0s;
+  }
+  .map-overlay-left {
+    width: auto;
+    max-width: none;
+  }
+
+  .menu-sheet {
+    padding: 14px;
+    border-radius: 22px;
+    background: rgba(29, 29, 31, 0.82);
+    -webkit-backdrop-filter: blur(28px) saturate(160%);
+    backdrop-filter: blur(28px) saturate(160%);
+    box-shadow:
+      inset 0 1px 0 rgba(255, 255, 255, 0.28),
+      inset 0 0 0 1px rgba(255, 255, 255, 0.08),
+      0 18px 50px rgba(0, 0, 0, 0.4);
+    color: var(--cc-text);
+  }
+  .menu-sheet-title {
+    margin: 0 0 10px;
+    font-size: 15px;
+    font-weight: 600;
+  }
+  .menu-sheet-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+  }
+  .menu-sheet .layer-group {
+    margin-top: 12px;
+  }
+
+  /* The camera pad no longer shares the bottom with a sheet. */
+  .nav-pad {
+    bottom: calc(16px + env(safe-area-inset-bottom, 0px));
+  }
+  body:has(.layer-extras:not(:empty)) .nav-pad,
+  body:has(#sat-info:not(.hidden)) .nav-pad,
+  body:has(#layer-card:not(.hidden)) .nav-pad {
+    display: none;
+  }
+  /* Panels (Conflict watch, Directions ...) sit at the bottom of the screen on their own. */
+  .layer-extras {
+    max-height: min(60vh, 540px);
+  }
+}
+
+/* =====================================================================================================
+   Light bar ("liquid glass"): the dark/light switch in the bar. Frosted white surfaces, dark text.
+   ===================================================================================================== */
+html[data-theme="light"] {
+  --cc-text: #1d1d1f;
+  --cc-muted: rgba(60, 60, 67, 0.62);
+  --cc-line: rgba(0, 0, 0, 0.1);
+  --cc-line-bright: rgba(0, 0, 0, 0.16);
+  --ap-surface: rgba(255, 255, 255, 0.62);
+  --ap-fill: rgba(60, 60, 67, 0.1);
+  --ap-fill-hover: rgba(60, 60, 67, 0.18);
+  --ap-blue: #0a84ff;
+}
+
+html[data-theme="light"] .command-header {
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.62), rgba(255, 255, 255, 0.34));
+  -webkit-backdrop-filter: blur(30px) saturate(190%);
+  backdrop-filter: blur(30px) saturate(190%);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.95),
+    inset 0 0 0 1px rgba(255, 255, 255, 0.55),
+    0 10px 34px rgba(0, 0, 0, 0.22);
+  color: #1d1d1f;
+}
+html[data-theme="light"] .menu-bar button {
+  background: rgba(60, 60, 67, 0.12);
+}
+html[data-theme="light"] .menu-bar button.is-open,
+html[data-theme="light"] .menu-bar button[aria-pressed="true"] {
+  background: #0a84ff;
+  color: #fff;
+}
+html[data-theme="light"] .loc-search,
+html[data-theme="light"] .dir-field {
+  background: rgba(60, 60, 67, 0.1);
+  box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.06);
+  color: #1d1d1f;
+}
+html[data-theme="light"] .loc-search input,
+html[data-theme="light"] .dir-field input {
+  color: #1d1d1f;
+}
+html[data-theme="light"] .loc-search input::placeholder,
+html[data-theme="light"] .dir-field input::placeholder {
+  color: rgba(60, 60, 67, 0.55);
+}
+
+/* Surfaces that hang off the bar or float over the map */
+html[data-theme="light"] .menu-sheet,
+html[data-theme="light"] .cc-module,
+html[data-theme="light"] .intel-card,
+html[data-theme="light"] .layer-card,
+html[data-theme="light"] .layer-panel,
+html[data-theme="light"] .track-pill,
+html[data-theme="light"] .nav-pad,
+html[data-theme="light"] .dir-suggest {
+  background: rgba(255, 255, 255, 0.7);
+  -webkit-backdrop-filter: blur(30px) saturate(190%);
+  backdrop-filter: blur(30px) saturate(190%);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.95),
+    inset 0 0 0 1px rgba(255, 255, 255, 0.55),
+    0 14px 40px rgba(0, 0, 0, 0.22);
+  color: #1d1d1f;
+}
+html[data-theme="light"] .cc-btn,
+html[data-theme="light"] .plane-filter-btn,
+html[data-theme="light"] .source-btn,
+html[data-theme="light"] .layer-chip {
+  background-color: rgba(60, 60, 67, 0.12);
+  color: #1d1d1f;
+}
+html[data-theme="light"] .cc-btn:hover:not(.is-on),
+html[data-theme="light"] .plane-filter-btn:hover,
+html[data-theme="light"] .layer-chip:hover:not(.is-on) {
+  background-color: rgba(60, 60, 67, 0.2);
+}
+html[data-theme="light"] .cc-btn.is-on,
+html[data-theme="light"] .layer-chip.is-on,
+html[data-theme="light"] .plane-filter-btn.active {
+  background-color: #0a84ff;
+  color: #fff;
+}
+html[data-theme="light"] .layer-card-row,
+html[data-theme="light"] .cc-module-title,
+html[data-theme="light"] .layer-panel-title {
+  color: #1d1d1f;
+}
+html[data-theme="light"] .layer-card-row span,
+html[data-theme="light"] .layer-status,
+html[data-theme="light"] .layer-group-title {
+  color: rgba(60, 60, 67, 0.62);
+}
+html[data-theme="light"] .nav-pad button,
+html[data-theme="light"] .track-label {
+  color: #1d1d1f;
+}
+html[data-theme="light"] .nav-pad button:hover {
+  background: rgba(0, 0, 0, 0.08);
+}
+html[data-theme="light"] .menu-sheet-title,
+html[data-theme="light"] .sat-info,
+html[data-theme="light"] .sat-info .row strong {
+  color: #1d1d1f;
+}
+
+@media (max-width: 720px) {
+  .command-header-left {
+    flex-wrap: nowrap;
+    width: 100%;
+    gap: 8px;
+  }
+  .command-header-brand-block {
+    min-width: 0;
+  }
+  .menu-bar button {
+    padding: 0 10px;
+  }
+}
+
+@media (max-width: 720px) {
+  .command-classification {
+    white-space: nowrap;
+    font-size: 10px;
+  }
+}
+
+/* Light glass needs more white to read as light over a dark map. */
+html[data-theme="light"] .command-header {
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.86), rgba(246, 247, 250, 0.74));
+}
+html[data-theme="light"] .menu-sheet,
+html[data-theme="light"] .cc-module,
+html[data-theme="light"] .intel-card,
+html[data-theme="light"] .layer-card,
+html[data-theme="light"] .layer-panel,
+html[data-theme="light"] .track-pill,
+html[data-theme="light"] .nav-pad,
+html[data-theme="light"] .dir-suggest {
+  background: rgba(250, 250, 253, 0.84);
+}
+html[data-theme="light"] .menu-bar button {
+  background: rgba(60, 60, 67, 0.1);
+}
+html[data-theme="light"] .command-live {
+  color: #e5342a;
+}
+@media (max-width: 720px) {
+  body.menu-map-open .nav-pad,
+  body.menu-layers-open .nav-pad {
+    display: none;
+  }
+}
+
+/* Desktop: just the light/dark icon, at the far end of the bar. */
+@media (min-width: 721px) {
+  .menu-bar {
+    display: flex;
+    align-items: center;
+    margin-left: 10px;
+    flex: 0 0 auto;
+  }
+  .menu-bar button[data-menu="map"],
+  .menu-bar button[data-menu="layers"] {
+    display: none;
+  }
+  .menu-bar button[data-menu="theme"] {
+    display: grid;
+    place-items: center;
+    width: 36px;
+    height: 36px;
+    padding: 0;
+    border: 0;
+    border-radius: 50%;
+    background: var(--ap-fill);
+    box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.1);
+    color: inherit;
+    cursor: pointer;
+    transition: background-color 0.25s var(--ap-ease), transform 0.2s var(--ap-ease);
+  }
+  .menu-bar button[data-menu="theme"] span {
+    display: none;
+  }
+  .menu-bar button[data-menu="theme"]:hover {
+    background: var(--ap-fill-hover);
+  }
+  .menu-bar button[data-menu="theme"]:active {
+    transform: scale(0.92);
+  }
+  .menu-bar button[data-menu="theme"][aria-pressed="true"] {
+    background: #0a84ff;
+    color: #fff;
+  }
+  html[data-theme="light"] .menu-bar button[data-menu="theme"]:not([aria-pressed="true"]) {
+    box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.06);
+  }
+}
+
+/* Launch livestream player */
+.launch-stream-frame {
+  display: block;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  border: 0;
+  border-radius: 12px;
+  background: #000;
+}
+#launch-stream .layer-panel-row a {
+  text-decoration: none;
+}
+
+/* Fly mode: a small icon in the top bar (shown only while 3D photo mode is on) */
+.menu-bar button.is-unavailable {
+  display: none !important;
+}
+@media (min-width: 721px) {
+  .menu-bar {
+    gap: 8px;
+  }
+  .menu-bar button[data-menu="fly"] {
+    display: grid;
+    place-items: center;
+    width: 36px;
+    height: 36px;
+    padding: 0;
+    border: 0;
+    border-radius: 50%;
+    background: var(--ap-fill);
+    box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.1);
+    color: inherit;
+    cursor: pointer;
+    transition: background-color 0.25s var(--ap-ease), transform 0.2s var(--ap-ease);
+  }
+  .menu-bar button[data-menu="fly"]:hover {
+    background: var(--ap-fill-hover);
+  }
+  .menu-bar button[data-menu="fly"]:active {
+    transform: scale(0.92);
+  }
+  .menu-bar button[data-menu="fly"].is-on {
+    background: #0a84ff;
+    color: #fff;
+  }
+}
+@media (max-width: 720px) {
+  .menu-bar button[data-menu="fly"].is-on {
+    background: #2997ff;
+    color: #fff;
+  }
+}
+html[data-theme="light"] .menu-bar button[data-menu="fly"]:not(.is-on) {
+  box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.06);
+}
+
+/* Collapsible data-layer sections */
+.layer-group-title[role="button"] {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  cursor: pointer;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+  border-radius: 8px;
+  outline-offset: 2px;
+}
+.layer-group-title[role="button"]::after {
+  content: "";
+  width: 7px;
+  height: 7px;
+  margin-right: 4px;
+  border-right: 2px solid currentColor;
+  border-bottom: 2px solid currentColor;
+  opacity: 0.55;
+  transform: translateY(-2px) rotate(45deg);
+  transition: transform 0.25s var(--ap-ease);
+}
+.layer-group.is-collapsed > .layer-group-title[role="button"]::after {
+  transform: translateY(0) rotate(-45deg);
+}
+.layer-group-title[role="button"]:hover {
+  color: var(--cc-text);
+}
+.layer-group.is-collapsed > .layer-group-row {
+  display: none;
+}
+.layer-group-live > .layer-group-title {
+  margin-top: 2px;
+}
+
+.layer-group-live > .layer-group-row {
+  display: block;
+  gap: 0;
+  padding: 0;
+}
+.layer-group-live.is-collapsed > .layer-group-row {
+  display: none;
+}
+
+.fly-label {
+  display: none;
+}
+@media (max-width: 720px) {
+  .menu-sheet-grid #fly-mode-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    width: auto;
+    height: auto;
+    min-height: 40px;
+    padding: 0 14px;
+    border: 0;
+    border-radius: 980px;
+    background: #3a3a3d;
+    color: #fff;
+    font: 600 13px var(--cc-sans);
+  }
+  .menu-sheet-grid #fly-mode-btn .fly-label {
+    display: inline;
+  }
+  .menu-sheet-grid #fly-mode-btn.is-on {
+    background: #2997ff;
+  }
+  html[data-theme="light"] .menu-sheet-grid #fly-mode-btn:not(.is-on) {
+    background: rgba(60, 60, 67, 0.12);
+    color: #1d1d1f;
+  }
+}
+
+@media (max-width: 720px) {
+  .menu-bar {
+    gap: 4px;
+  }
+  .menu-bar button {
+    padding: 0 9px;
+    gap: 5px;
+    font-size: 12.5px;
+  }
+  .menu-bar button.menu-icon-only {
+    width: 32px;
+  }
+  .command-header-left {
+    gap: 6px;
+  }
+}
+
+/* =====================================================================================================
+   Phone layout v2: full-screen globe, floating top bar, menu dock along the bottom
+   ===================================================================================================== */
+.mobile-dock {
+  display: none;
+}
+
+@media (max-width: 720px) {
+  :root {
+    --dock-h: 54px;
+    /* Distance from the bottom of the screen to the top edge of the dock, plus a little air. */
+    --dock-top: calc(var(--dock-h) + 20px + env(safe-area-inset-bottom, 0px));
+  }
+
+  /* The globe fills the screen; the bars float over it (same as desktop). */
+  .command-header {
+    position: absolute;
+    top: calc(6px + env(safe-area-inset-top, 0px));
+    left: 8px;
+    right: 8px;
+    margin: 0;
+    z-index: 20;
+  }
+  .command-body {
+    position: absolute;
+    inset: 0;
+  }
+
+  .mobile-dock {
+    position: fixed;
+    left: 12px;
+    right: 12px;
+    bottom: calc(10px + env(safe-area-inset-bottom, 0px));
+    z-index: 40;
+    display: flex;
+    align-items: center;
+    height: var(--dock-h);
+    padding: 6px;
+    border-radius: 28px;
+    background: rgba(29, 29, 31, 0.78);
+    -webkit-backdrop-filter: blur(30px) saturate(180%);
+    backdrop-filter: blur(30px) saturate(180%);
+    box-shadow:
+      inset 0 1px 0 rgba(255, 255, 255, 0.28),
+      inset 0 0 0 1px rgba(255, 255, 255, 0.08),
+      0 12px 36px rgba(0, 0, 0, 0.4);
+    color: var(--cc-text);
+  }
+  .mobile-dock .menu-bar {
+    display: flex;
+    flex: 1;
+    gap: 6px;
+    margin: 0;
+  }
+  .mobile-dock .menu-bar button {
+    flex: 1 1 0;
+    justify-content: center;
+    height: 42px;
+    padding: 0 8px;
+    font-size: 13px;
+    background: transparent;
+  }
+  .mobile-dock .menu-bar button.menu-icon-only {
+    flex: 0 0 52px;
+    width: auto;
+  }
+  .mobile-dock .menu-bar button:not(.is-open):not([aria-pressed="true"]):active {
+    background: rgba(255, 255, 255, 0.14);
+  }
+  .mobile-dock .menu-bar button.is-open,
+  .mobile-dock .menu-bar button[aria-pressed="true"] {
+    background: #2997ff;
+    color: #fff;
+  }
+  html[data-theme="light"] .mobile-dock {
+    background: rgba(250, 250, 253, 0.86);
+    box-shadow:
+      inset 0 1px 0 rgba(255, 255, 255, 0.95),
+      inset 0 0 0 1px rgba(255, 255, 255, 0.55),
+      0 12px 36px rgba(0, 0, 0, 0.24);
+    color: #1d1d1f;
+  }
+  html[data-theme="light"] .mobile-dock .menu-bar button:not(.is-open):not([aria-pressed="true"]) {
+    background: transparent;
+  }
+  html[data-theme="light"] .mobile-dock .menu-bar button:not(.is-open):not([aria-pressed="true"]):active {
+    background: rgba(60, 60, 67, 0.14);
+  }
+
+  /* Sheets rise out of the dock (they used to hang from the top bar). */
+  .menu-sheet,
+  .map-overlay-left {
+    top: auto;
+    bottom: var(--dock-top);
+    max-height: calc(100dvh - var(--bar-bottom, 96px) - var(--dock-top) - 12px);
+    transform-origin: 50% 100%;
+    transform: translateY(16px) scale(0.94);
+  }
+  body.menu-map-open .menu-sheet,
+  body.menu-layers-open .map-overlay-left {
+    transform: none;
+  }
+
+  /* Everything else that lived at the bottom now clears the dock. */
+  .layer-extras {
+    bottom: var(--dock-top);
+    max-height: min(52vh, 460px);
+  }
+  .track-pill {
+    bottom: var(--dock-top);
+  }
+  .nav-pad {
+    bottom: calc(var(--dock-top) + 6px);
+  }
+  /* Cards stack under the top bar. */
+  .map-overlay-right {
+    top: calc(var(--bar-bottom, 96px) - 2px);
+    bottom: auto;
+  }
+}
+
+@media (max-width: 720px) {
+  /* The camera pad becomes a slim row centred above the dock, clear of the globe. */
+  .nav-pad {
+    left: 50%;
+    right: auto;
+    top: auto;
+    flex-direction: row;
+    border-radius: 980px;
+    transform: translateX(-50%);
+    bottom: calc(var(--dock-top) + 4px);
+  }
+  .nav-pad button {
+    width: 40px;
+    height: 40px;
+  }
+}
+
+@media (max-width: 720px) {
+  /* One tidy two-column grid for every toggle in the sheets, all the same size. */
+  .map-overlay-left .layer-group-row,
+  .menu-sheet .layer-group-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+    padding: 0;
+  }
+  .map-overlay-left .layer-cell,
+  .menu-sheet .layer-cell {
+    min-width: 0;
+  }
+  .map-overlay-left .layer-chip,
+  .menu-sheet .layer-chip,
+  .map-overlay-left .cc-btn,
+  .menu-sheet .cc-btn {
+    width: 100%;
+    min-height: 40px;
+    height: 40px;
+    padding: 0 10px;
+    font-size: 13px;
+  }
+  .map-overlay-left .layer-group-live > .layer-group-row,
+  .map-overlay-left .bottom-controls {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+  }
+  .map-overlay-left .layer-group-live .source-controls {
+    margin-top: 8px;
+  }
+}
+
+@media (max-width: 720px) {
+  .map-overlay-left .layer-group-live > .layer-group-row {
+    display: block;
+  }
+  .map-overlay-left .layer-cell {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+  .map-overlay-left .layer-status {
+    min-height: 0;
+    padding: 0 8px;
+  }
+  .map-overlay-left .layer-status:empty {
+    display: none;
+  }
+}
+
+#fly-mode-btn.is-unavailable {
+  display: none !important;
+}
+@media (max-width: 720px) {
+  .menu-sheet .layer-cell {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+  .menu-sheet .layer-status {
+    min-height: 0;
+    padding: 0 8px;
+  }
+  .menu-sheet .layer-status:empty {
+    display: none;
+  }
+  .menu-sheet .layer-group {
+    margin-top: 14px;
+  }
+  .menu-sheet-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+  .menu-sheet-grid #fly-mode-btn {
+    height: 40px;
+  }
+}
+
+@media (max-width: 720px) {
+  /* Keep the middle of the screen free so whatever you selected stays in view behind the card. */
+  .intel-card {
+    max-height: 34vh;
+  }
+  .layer-card {
+    max-height: 30vh;
+  }
+}
+
+@media (max-width: 720px) {
+  /* Compact aircraft card: a thin photo/silhouette strip so the numbers fit without scrolling. */
+  .sat-info .plane-info-media {
+    height: 64px;
+    min-height: 0;
+    margin: 4px 0;
+  }
+  .sat-info .plane-info-photo,
+  .sat-info .plane-info-silhouette img {
+    max-height: 64px;
+    height: 64px;
+    object-fit: contain;
+  }
+  .sat-info .plane-info-silhouette {
+    height: 64px;
+    padding: 0;
+  }
+  .sat-info {
+    padding-top: 10px;
+    padding-bottom: 8px;
+  }
+}
+
+/* Items in the selection card never squash each other when the card is short. */
+.intel-card-content,
+#sat-info-core {
+  min-height: 0;
+}
+.intel-card-content > *,
+#sat-info-core > *,
+.sat-info #sat-name {
+  flex-shrink: 0;
+}
+.sat-info #sat-name {
+  overflow: visible;
+}
+@media (max-width: 720px) {
+  .intel-card {
+    max-height: 36vh;
+  }
+}
+
+@media (max-width: 720px) {
+  .sat-info .plane-info-silhouette {
+    display: none;
+  }
+  .sat-info .plane-info-media:has(.plane-info-silhouette:not(.hidden)):not(:has(.plane-info-photo:not(.hidden))) {
+    display: none;
+  }
+}
+
+@media (max-width: 720px) {
+  /* Directions bar: From over To with the swap button between them on the right, then Avoid ALPR. */
+  .dir-search {
+    grid-template-columns: 1fr 40px;
+    grid-template-areas:
+      "from swap"
+      "to swap"
+      "avoid avoid"
+      "sug sug";
+    align-items: center;
+  }
+  .dir-search > label:nth-of-type(1) {
+    grid-area: from;
+  }
+  .dir-search > label:nth-of-type(2) {
+    grid-area: to;
+  }
+  .dir-search .dir-swap {
+    grid-area: swap;
+    justify-self: center;
+    width: 36px;
+    height: 36px;
+  }
+  .dir-search .dir-avoid {
+    grid-area: avoid;
+    justify-self: stretch;
+  }
+  .dir-search .dir-suggest {
+    grid-area: sug;
+  }
+}
+
+@media (max-width: 720px) {
+  .mobile-dock {
+    box-sizing: border-box;
+  }
+}
+
+/* =====================================================================================================
+   Phone: menus size themselves to the screen. Anything taller than its share scrolls inside itself.
+   ===================================================================================================== */
+@media (max-width: 720px) {
+  :root {
+    --dock-h: clamp(46px, 6.4dvh, 54px);
+    --ui-gap: clamp(5px, 1dvh, 8px);
+    --ui-btn-h: clamp(32px, 4.7dvh, 38px);
+    --ui-font: clamp(11.5px, 3.2vw, 13px);
+    --sheet-max: 44dvh;
+  }
+
+  /* Sheets rising from the dock */
+  .menu-sheet,
+  .map-overlay-left {
+    left: 10px;
+    right: 10px;
+    max-height: min(var(--sheet-max), calc(100dvh - var(--bar-bottom, 96px) - var(--dock-top) - 12px));
+    border-radius: 18px;
+    scrollbar-width: none;
+  }
+  .menu-sheet::-webkit-scrollbar,
+  .map-overlay-left::-webkit-scrollbar {
+    display: none;
+  }
+  .menu-sheet {
+    padding: 10px 12px;
+  }
+  .map-overlay-left .cc-module,
+  .map-overlay-left .cc-module-body {
+    padding-top: 0;
+    padding-bottom: 4px;
+  }
+  .map-overlay-left .cc-module-title,
+  .menu-sheet-title {
+    padding: 8px 12px 2px;
+    margin: 0 0 4px;
+    font-size: 13px;
+  }
+  .menu-sheet-title {
+    padding: 0;
+  }
+  .map-overlay-left .layer-group,
+  .menu-sheet .layer-group {
+    margin-top: 8px;
+    padding-top: 6px;
+  }
+  .map-overlay-left .layer-group-title,
+  .menu-sheet .layer-group-title {
+    font-size: 11px;
+    margin-bottom: 4px;
+  }
+  .map-overlay-left .layer-group-row,
+  .menu-sheet .layer-group-row,
+  .map-overlay-left .layer-group-live > .layer-group-row,
+  .map-overlay-left .bottom-controls,
+  .menu-sheet-grid {
+    gap: var(--ui-gap);
+  }
+  .map-overlay-left .layer-chip,
+  .menu-sheet .layer-chip,
+  .map-overlay-left .cc-btn,
+  .menu-sheet .cc-btn,
+  .menu-sheet-grid #fly-mode-btn {
+    min-height: var(--ui-btn-h);
+    height: var(--ui-btn-h);
+    font-size: var(--ui-font);
+    padding: 0 8px;
+  }
+
+  /* Floating panels (Conflict watch, Directions, Radio, Launch stream ...) */
+  .layer-extras {
+    left: 10px;
+    right: 10px;
+    max-height: min(40dvh, 380px);
+    gap: 8px;
+  }
+  .layer-panel {
+    padding: 10px 12px;
+    border-radius: 16px;
+    font-size: var(--ui-font);
+  }
+  .layer-panel .layer-panel-title {
+    font-size: 13px;
+  }
+  .layer-panel .layer-panel-note,
+  .layer-panel small {
+    font-size: 11px;
+  }
+  .layer-panel .layer-card-btn,
+  .layer-panel button {
+    font-size: var(--ui-font);
+  }
+
+  /* Details and selection cards */
+  .layer-card {
+    max-height: 26dvh;
+    padding: 10px 12px;
+    border-radius: 16px;
+  }
+  .layer-card-title {
+    font-size: 16px;
+  }
+  .layer-card-row {
+    padding: 5px 0;
+    font-size: 12px;
+  }
+  .layer-card-btn,
+  .layer-card-link {
+    padding: 6px 12px;
+    font-size: 12px;
+  }
+  .intel-card {
+    max-height: 32dvh;
+  }
+  #sat-name,
+  .intel-primary {
+    font-size: 19px;
+    margin-bottom: 6px;
+  }
+
+  /* Follow bar and dock stay slim */
+  .track-pill {
+    padding: 8px;
+    gap: 6px;
+    border-radius: 18px;
+  }
+  .track-btn {
+    padding: 7px 8px;
+    font-size: 12px;
+  }
+  .mobile-dock .menu-bar button {
+    height: calc(var(--dock-h) - 12px);
+    font-size: var(--ui-font);
+  }
+  .nav-pad button {
+    width: 36px;
+    height: 36px;
+  }
+}
+
+@media (max-width: 720px) {
+  .map-overlay-left #source-controls {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: var(--ui-gap);
+    margin-top: var(--ui-gap);
+  }
+  .map-overlay-left #source-controls.hidden {
+    display: none;
+  }
+  .map-overlay-left #source-controls .cc-btn {
+    padding: 0 4px;
+    font-size: 11.5px;
+  }
+}
+
+/* Search text follows the brightness of the map right behind the search box (read in logo.ts). */
+.loc-search,
+.loc-search input,
+.loc-search-btn,
+.dir-field,
+.dir-field input,
+.dir-avoid,
+.dir-swap {
+  transition: color 0.4s var(--ap-ease), background-color 0.25s var(--ap-ease), box-shadow 0.25s var(--ap-ease);
+}
+.command-header[data-search-tone="dark"] .loc-search,
+.command-header[data-search-tone="dark"] .loc-search input,
+.command-header[data-search-tone="dark"] .dir-field,
+.command-header[data-search-tone="dark"] .dir-field input,
+.command-header[data-search-tone="dark"] .loc-search:not(.compact) .loc-search-btn:not(.loc-locate) {
+  color: #f5f5f7;
+}
+.command-header[data-search-tone="dark"] .loc-search input::placeholder,
+.command-header[data-search-tone="dark"] .dir-field input::placeholder {
+  color: rgba(245, 245, 247, 0.62);
+}
+.command-header[data-search-tone="light"] .loc-search,
+.command-header[data-search-tone="light"] .loc-search input,
+.command-header[data-search-tone="light"] .dir-field,
+.command-header[data-search-tone="light"] .dir-field input,
+.command-header[data-search-tone="light"] .loc-search:not(.compact) .loc-search-btn:not(.loc-locate) {
+  color: #1d1d1f;
+}
+.command-header[data-search-tone="light"] .loc-search input::placeholder,
+.command-header[data-search-tone="light"] .dir-field input::placeholder {
+  color: rgba(29, 29, 31, 0.58);
+}
+.command-header[data-search-tone="light"] .loc-search,
+.command-header[data-search-tone="light"] .dir-field {
+  background: rgba(255, 255, 255, 0.34);
+  box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.08);
+}
+html[data-theme="light"] .command-header .loc-search,
+html[data-theme="light"] .command-header .dir-field {
+  background: rgba(60, 60, 67, 0.1);
+}
+
+/* The search pill backs its own text: a tinted fill that matches the text colour, so it stays legible even where
+   the map behind it is half bright and half dark. */
+.command-header[data-search-tone="dark"] .loc-search,
+.command-header[data-search-tone="dark"] .dir-field {
+  background: rgba(24, 24, 27, 0.5);
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.12);
+}
+.command-header[data-search-tone="light"] .loc-search,
+.command-header[data-search-tone="light"] .dir-field {
+  background: rgba(255, 255, 255, 0.66);
+  box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.08);
+}
+html[data-theme="light"] .command-header .loc-search,
+html[data-theme="light"] .command-header .dir-field {
+  background: rgba(60, 60, 67, 0.1);
+}
+
+/* Imagery picker: Aerial / Esri / Streets */
+.imagery-row {
+  display: grid !important;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 6px;
+}
+.imagery-row .layer-chip {
+  width: 100%;
+}
+.imagery-row .layer-chip:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+.imagery-note {
+  margin: 6px 2px 0;
+  font-size: 11px;
+  line-height: 1.35;
+}
+@media (max-width: 720px) {
+  .map-overlay-left .imagery-row,
+  .menu-sheet .imagery-row {
+    grid-template-columns: repeat(3, 1fr);
+  }
+  .menu-sheet #imagery-picker {
+    margin-top: 0;
+    margin-bottom: 4px;
+  }
+}
+
+/* =====================================================================================================
+   Phone: calmer glass. The map redraws several times a second (aircraft, satellites ...) and every redraw makes the
+   blur behind a panel re-sample the new picture — most visible along the top edge of the Layers sheet and the dock
+   as a shimmer. A smaller blur radius (no extra colour boost) on a more solid fill, on its own compositor layer,
+   keeps the frosted look without the flicker.
+   ===================================================================================================== */
+@media (max-width: 720px) {
+  .mobile-dock,
+  .menu-sheet,
+  .nav-pad,
+  .map-overlay-left .cc-module,
+  .layer-card,
+  .layer-panel,
+  .track-pill,
+  .intel-card {
+    -webkit-backdrop-filter: blur(14px);
+    backdrop-filter: blur(14px);
+  }
+  .mobile-dock {
+    background: rgba(29, 29, 31, 0.93);
+  }
+  .menu-sheet,
+  .map-overlay-left .cc-module {
+    background: rgba(29, 29, 31, 0.94);
+  }
+  .nav-pad,
+  .layer-card,
+  .layer-panel,
+  .track-pill,
+  .intel-card {
+    background: rgba(29, 29, 31, 0.9);
+  }
+  .mobile-dock,
+  .menu-sheet,
+  .map-overlay-left,
+  .nav-pad {
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
+    will-change: transform;
+  }
+  html[data-theme="light"] .mobile-dock,
+  html[data-theme="light"] .menu-sheet,
+  html[data-theme="light"] .map-overlay-left .cc-module,
+  html[data-theme="light"] .nav-pad,
+  html[data-theme="light"] .layer-card,
+  html[data-theme="light"] .layer-panel,
+  html[data-theme="light"] .track-pill,
+  html[data-theme="light"] .intel-card {
+    -webkit-backdrop-filter: blur(14px);
+    backdrop-filter: blur(14px);
+    background: rgba(250, 250, 253, 0.94);
+  }
+}
+
+/* =====================================================================================================
+   Keys & tokens menu: drops from the bottom of the top bar on desktop, rises out of the dock on a phone
+   ===================================================================================================== */
+.keys-sheet {
+  position: fixed;
+  z-index: 45;
+  top: var(--bar-bottom, 76px);
+  right: 14px;
+  width: min(380px, calc(100vw - 28px));
+  max-height: calc(100dvh - var(--bar-bottom, 76px) - 16px);
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  padding: 14px 16px 16px;
+  border-radius: 20px;
+  background: rgba(29, 29, 31, 0.92);
+  -webkit-backdrop-filter: blur(24px);
+  backdrop-filter: blur(24px);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.28),
+    inset 0 0 0 1px rgba(255, 255, 255, 0.08),
+    0 18px 50px rgba(0, 0, 0, 0.4);
+  color: var(--cc-text);
+  scrollbar-width: thin;
+  transform-origin: 100% 0;
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transform: translateY(-10px) scale(0.96);
+  transition:
+    opacity 0.2s var(--ap-ease),
+    transform 0.3s cubic-bezier(0.2, 0.9, 0.25, 1.1),
+    visibility 0s linear 0.3s;
+}
+body.menu-keys-open .keys-sheet {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+  transform: none;
+  transition-delay: 0s;
+}
+.keys-sheet .menu-sheet-title {
+  margin: 0 0 12px;
+  font-size: 15px;
+  font-weight: 600;
+}
+.keys-group {
+  margin-top: 14px;
+  padding-top: 12px;
+  border-top: 1px solid var(--cc-line);
+}
+.keys-group:first-of-type {
+  margin-top: 0;
+  padding-top: 0;
+  border-top: 0;
+}
+.keys-group-title {
+  margin-bottom: 8px;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  color: var(--cc-muted);
+}
+.keys-field {
+  display: block;
+  margin-bottom: 11px;
+}
+.keys-field-top {
+  display: flex;
+  justify-content: space-between;
+  gap: 8px;
+  margin-bottom: 4px;
+  font-size: 12.5px;
+  font-weight: 600;
+}
+.keys-status {
+  font-weight: 500;
+  font-size: 11px;
+  color: var(--cc-muted);
+}
+.keys-status.is-set,
+.keys-summary-line.is-set strong {
+  color: #30d158;
+  font-weight: 600;
+}
+html[data-theme="light"] .keys-status.is-set,
+html[data-theme="light"] .keys-summary-line.is-set strong {
+  color: #1c8a3a;
+}
+.keys-summary {
+  margin: 0 0 4px;
+}
+.keys-summary:empty {
+  display: none;
+}
+.keys-summary-line {
+  margin: 4px 0 0;
+  font-size: 12px;
+  line-height: 1.4;
+  color: var(--cc-muted);
+}
+.keys-summary-line strong {
+  font-weight: 600;
+}
+.keys-input-row {
+  display: flex;
+  gap: 6px;
+}
+.keys-input {
+  flex: 1;
+  min-width: 0;
+  height: 34px;
+  padding: 0 10px;
+  border: 0;
+  border-radius: 10px;
+  background: var(--ap-fill);
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.1);
+  color: inherit;
+  font: 500 13px var(--cc-sans);
+  outline: 0;
+}
+.keys-input:focus {
+  box-shadow: 0 0 0 3px rgba(41, 151, 255, 0.5);
+}
+.keys-input:disabled {
+  opacity: 0.55;
+}
+.keys-show {
+  flex: 0 0 auto;
+  padding: 0 11px;
+  border: 0;
+  border-radius: 10px;
+  background: var(--ap-fill);
+  color: var(--ap-blue);
+  font: 600 12px var(--cc-sans);
+  cursor: pointer;
+}
+.keys-help {
+  display: block;
+  margin-top: 4px;
+  font-size: 11px;
+  line-height: 1.35;
+  color: var(--cc-muted);
+}
+.keys-help a {
+  color: var(--ap-blue);
+}
+.keys-note,
+.keys-msg {
+  margin: 8px 0 0;
+  font-size: 11px;
+  line-height: 1.4;
+  color: var(--cc-muted);
+}
+.keys-msg:empty {
+  display: none;
+}
+.keys-group .layer-card-btn {
+  margin-top: 4px;
+}
+html[data-theme="light"] .keys-sheet {
+  background: rgba(250, 250, 253, 0.94);
+  color: #1d1d1f;
+}
+html[data-theme="light"] .keys-input {
+  box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.1);
+}
+
+/* Desktop: the key icon sits with the theme icon */
+@media (min-width: 721px) {
+  .menu-bar button[data-menu="keys"] {
+    display: grid;
+    place-items: center;
+    width: 36px;
+    height: 36px;
+    padding: 0;
+    border: 0;
+    border-radius: 50%;
+    background: var(--ap-fill);
+    box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.1);
+    color: inherit;
+    cursor: pointer;
+    transition: background-color 0.25s var(--ap-ease), transform 0.2s var(--ap-ease);
+  }
+  .menu-bar button[data-menu="keys"]:hover {
+    background: var(--ap-fill-hover);
+  }
+  .menu-bar button[data-menu="keys"].is-open {
+    background: #0a84ff;
+    color: #fff;
+  }
+}
+
+@media (max-width: 720px) {
+  .keys-sheet {
+    top: auto;
+    bottom: var(--dock-top);
+    left: 10px;
+    right: 10px;
+    width: auto;
+    max-height: min(62dvh, calc(100dvh - var(--bar-bottom, 96px) - var(--dock-top) - 12px));
+    transform-origin: 50% 100%;
+    transform: translateY(16px) scale(0.94);
+    padding: 12px 14px 14px;
+    -webkit-backdrop-filter: blur(14px);
+    backdrop-filter: blur(14px);
+    background: rgba(29, 29, 31, 0.95);
+  }
+  body.menu-keys-open .keys-sheet {
+    transform: none;
+  }
+  body.menu-keys-open .nav-pad {
+    display: none;
+  }
+  .mobile-dock .menu-bar button.menu-icon-only {
+    flex: 0 0 48px;
+  }
+  html[data-theme="light"] .keys-sheet {
+    background: rgba(250, 250, 253, 0.95);
+  }
+}
+
+/* =====================================================================================================
+   No live blur on the surfaces that sit over the always-redrawing globe.
+   A frosted-glass panel blurs whatever is drawn behind it, so every redraw of the map (aircraft and satellites move
+   several times a second) makes the blur re-sample — which shows up as a flicker along the top edge of the Data
+   layers menu and of the bottom bar. These surfaces are now a solid, slightly translucent fill with the same soft
+   highlight, so there is nothing to re-sample. (The top bar and floating cards keep the glass.)
+   ===================================================================================================== */
+.cc-module,
+.nav-pad,
+.mobile-dock,
+.menu-sheet,
+.keys-sheet {
+  -webkit-backdrop-filter: none !important;
+  backdrop-filter: none !important;
+  will-change: auto !important;
+  background: rgba(30, 30, 33, 0.97) !important;
+}
+html[data-theme="light"] .cc-module,
+html[data-theme="light"] .nav-pad,
+html[data-theme="light"] .mobile-dock,
+html[data-theme="light"] .menu-sheet,
+html[data-theme="light"] .keys-sheet {
+  background: rgba(247, 247, 250, 0.98) !important;
+}
+.map-overlay-left {
+  will-change: auto !important;
+}
+
+/* Aircraft card: "Show all details" drop-down. Collapsed = the compact card (some rows may be cut off);
+   expanded = the card grows, its content scrolls, and on the phone the menu dock steps aside. */
+.plane-card-toggle {
+  display: none;
+}
+.sat-info.aircraft-mode .plane-card-toggle {
+  display: flex;
+  flex: 0 0 auto;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  width: 100%;
+  min-height: 36px;
+  margin-top: 4px;
+  padding: 6px 10px;
+  border: 0;
+  border-top: 1px solid rgba(255, 255, 255, 0.12);
+  background: transparent;
+  color: var(--cc-muted);
+  font: inherit;
+  font-size: 12px;
+  letter-spacing: 0.04em;
+  cursor: pointer;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+}
+.plane-card-toggle-chev {
+  display: inline-block;
+  transition: transform 0.2s var(--ap-ease);
+}
+.sat-info.plane-expanded .plane-card-toggle-chev {
+  transform: rotate(180deg);
+}
+.sat-info.aircraft-mode.plane-expanded #sat-info-core {
+  overflow-y: auto;
+  scrollbar-width: thin;
+}
+@media (max-width: 720px) {
+  .sat-info.aircraft-mode.plane-expanded.intel-card {
+    max-height: calc(100dvh - 210px);
+  }
+  html.plane-card-expanded .mobile-dock {
+    display: none;
+  }
+}
+
+/* =====================================================================================================
+   Set my location by hand (a phone over plain http can't share its position): the "tap the map" banner and the
+   place finder inside the location card.
+   ===================================================================================================== */
+.pick-location-hint {
+  position: fixed;
+  left: 50%;
+  top: calc(var(--bar-bottom, 96px) + 8px);
+  transform: translateX(-50%);
+  width: max-content;
+  max-width: calc(100vw - 32px);
+  z-index: 60;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 8px 8px 16px;
+  border-radius: 999px;
+  background: rgba(29, 29, 31, 0.94);
+  color: #fff;
+  font-size: 13px;
+  font-weight: 600;
+  box-shadow: 0 6px 24px rgba(0, 0, 0, 0.35);
+  -webkit-backdrop-filter: blur(14px);
+  backdrop-filter: blur(14px);
+}
+.pick-location-hint.hidden {
+  display: none;
+}
+.pick-location-hint button {
+  border: 0;
+  border-radius: 999px;
+  padding: 6px 12px;
+  font: inherit;
+  color: #2997ff;
+  background: rgba(255, 255, 255, 0.12);
+}
+.manual-loc-row {
+  display: flex;
+  gap: 6px;
+  margin-top: 8px;
+}
+.manual-loc-row .keys-input {
+  flex: 1;
+  min-width: 0;
+}
+.manual-loc-results {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-top: 6px;
+}
+.manual-loc-hit {
+  width: 100%;
+  text-align: left;
+  white-space: normal;
+}
+
+/* ---- Credits: the corner link on the map and the Credits section of the Keys sheet (src/credits.ts) ---- */
+.credits-link {
+  position: fixed;
+  z-index: 19;
+  right: 12px;
+  bottom: calc(6px + env(safe-area-inset-bottom, 0px));
+  padding: 3px 10px;
+  border: 0;
+  border-radius: 980px;
+  background: rgba(29, 29, 31, 0.55);
+  -webkit-backdrop-filter: blur(12px);
+  backdrop-filter: blur(12px);
+  color: rgba(255, 255, 255, 0.78);
+  font: 500 11px/1.4 -apple-system, "SF Pro Text", Inter, sans-serif;
+  cursor: pointer;
+}
+.credits-link:hover,
+.credits-link:focus-visible {
+  color: #fff;
+  background: rgba(29, 29, 31, 0.85);
+}
+@media (max-width: 720px) {
+  /* Above the bottom dock and left of the camera pad. */
+  .credits-link {
+    right: auto;
+    left: 10px;
+    bottom: calc(66px + env(safe-area-inset-bottom, 0px));
+    padding: 3px 8px;
+    font-size: 10.5px;
+  }
+}
+html[data-theme="light"] .credits-link {
+  background: rgba(255, 255, 255, 0.7);
+  color: rgba(0, 0, 0, 0.7);
+}
+.credits-list {
+  margin: 8px 0 0;
+  padding: 0;
+  list-style: none;
+  font-size: 12px;
+  line-height: 1.45;
+  color: var(--cc-text-dim, rgba(255, 255, 255, 0.7));
+}
+.credits-list li {
+  padding: 5px 0;
+  border-top: 1px solid var(--cc-line);
+}
+.credits-list a {
+  color: var(--cc-text, #fff);
+  font-weight: 600;
+  text-decoration: none;
+}
+.credits-list a:hover {
+  text-decoration: underline;
+}
+.credits-subtitle {
+  margin: 10px 0 4px;
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--cc-text-dim, rgba(255, 255, 255, 0.7));
+}
+.credits-live-line {
+  margin: 0 0 3px;
+  font-size: 12px;
+  line-height: 1.4;
+}
