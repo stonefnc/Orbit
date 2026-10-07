@@ -18,7 +18,7 @@ Three goals, in order of how often they decided a question:
 
 About 25,000 lines of TypeScript and CSS in the browser client (Cesium, Vite), about 8,000 in a small Express server that
 fetches, merges and caches the feeds, more than 20 toggleable layers plus search, directions and a time machine, around 50 API
-routes, 19 unit-test files (130 tests) and three Playwright browser suites run at desktop and phone size. It started in
+routes, 21 unit-test files (173 tests) and three Playwright browser suites run at desktop and phone size. It started in
 May 2026 and took about 120 commits. It installs as a web app (PWA), builds into a stand-alone Windows app, and has no
 hosted component: you run it yourself.
 

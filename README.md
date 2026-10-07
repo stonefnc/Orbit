@@ -33,6 +33,7 @@ Turn things on and off from the **Data layers** menu on the left. Each section f
 | 🌋 | **Events** | Earthquakes, active fires and the **Conflict watch**. |
 | 🌊 | **Infrastructure** | Undersea cables, dams, **power plants** (coloured by fuel, sized by output) and the **power grid**: high-voltage lines and substations that load as you zoom into a region. |
 | 📻 | **Radio & launches** | Live radio stations, and rocket launches with an ascent replay and a **Watch** button that plays the livestream (YouTube in the page; X, NASA+ and others open in a new tab). |
+| 🏚️ | **Abandoned places** | Places OpenStreetMap mappers tagged abandoned, disused or ruined, rated very likely, likely or maybe, with the tags behind each rating and a link to the same spot on TrespassersHQ. Mine shafts and adits are marked as hazards. Zoom in to city level. |
 | 🕰️ | **Time machine** | Scrub back through time to see how things looked. |
 
 ### 🔎 Search, directions and "my location"

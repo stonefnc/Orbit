@@ -4,6 +4,7 @@ import { getWindField } from "../lib/wind";
 import { getCableDetail, getCableGeo, getLandingGeo } from "../lib/cables";
 import { getDams } from "../lib/dams";
 import { getPowerPlants, queryPowerGrid } from "../lib/power";
+import { queryAbandoned } from "../lib/abandoned";
 import { getRadioStations } from "../lib/radio";
 import { getLaunches } from "../lib/launches";
 import { getRoute, getRouteAvoidingAlpr, type RouteProfile } from "../lib/route";
@@ -106,6 +107,28 @@ export function layersRouter(): Router {
       res.json(out);
     } catch (e) {
       fail(res, "power grid", e);
+    }
+  });
+  r.get("/abandoned", async (req, res) => {
+    const [w, s, e, n] = ["w", "s", "e", "n"].map((k) => Number(req.query[k]));
+    if ([w, s, e, n].some((v) => !Number.isFinite(v)) || Math.abs(s!) > 90 || Math.abs(n!) > 90 || s! > n!) {
+      res.status(400).json({ error: "w, s, e, n must be valid degrees" });
+      return;
+    }
+    const limit = Math.min(6000, Math.max(100, Number(req.query.limit) || 3000));
+    // 0 unlikely, 1 maybe, 2 likely (default), 3 very likely.
+    const minRaw = Number(req.query.min);
+    const min = (minRaw === 0 || minRaw === 1 || minRaw === 3 ? minRaw : 2) as 0 | 1 | 2 | 3;
+    try {
+      const out = await queryAbandoned(w!, s!, e!, n!, limit, min);
+      if (out === "too-wide") {
+        res.status(413).json({ error: "View too wide — zoom in a little to load abandoned places" });
+        return;
+      }
+      res.setHeader("Cache-Control", out.tilesPending ? "no-store" : "public, max-age=60");
+      res.json(out);
+    } catch (err) {
+      fail(res, "abandoned places", err);
     }
   });
   r.get("/trace/:hex", async (req, res) => {

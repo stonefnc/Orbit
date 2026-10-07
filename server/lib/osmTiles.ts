@@ -29,14 +29,29 @@ export type TileStoreOptions<T> = {
   query: (south: number, west: number, north: number, east: number) => string;
   /** Turns Overpass elements into the items to keep. */
   parse: (elements: unknown[]) => T[];
+  /** How long to wait for the main server on one tile (default 50 s); a query with many filters needs longer. */
+  timeoutMs?: number;
+  /**
+   * Stores that share a lane never have more than one request in flight between them, so one layer made of several
+   * queries stays gentle on the public servers. Stores without a lane run independently.
+   */
+  lane?: string;
 };
+
+const lanes = new Map<string, Promise<unknown>>();
+function inLane<R>(lane: string | undefined, fn: () => Promise<R>): Promise<R> {
+  if (!lane) return fn();
+  const run = (lanes.get(lane) ?? Promise.resolve()).then(fn, fn);
+  lanes.set(lane, run.catch(() => undefined));
+  return run;
+}
 
 export type TileStore<T> = {
   /** Cached items for one tile (null if none yet), whether they are fresh, and whether the last fetch failed. */
   read(lat: number, lon: number): Promise<{ items: T[] | null; fresh: boolean; failed: boolean }>;
 };
 
-async function overpass(query: string): Promise<unknown[]> {
+async function overpass(query: string, mainTimeoutMs = FETCH_TIMEOUT_MS): Promise<unknown[]> {
   let lastErr: unknown;
   // The main public server sheds load now and then: try it twice, then the mirrors with shorter patience.
   const attempts = [ENDPOINTS[0]!, ENDPOINTS[0]!, ...ENDPOINTS.slice(1)];
@@ -51,7 +66,7 @@ async function overpass(query: string): Promise<unknown[]> {
           "User-Agent": "Orbit/1.0 (+https://github.com/runna5k/Orbit)"
         },
         body: `data=${encodeURIComponent(query)}`,
-        signal: AbortSignal.timeout(i < 2 ? FETCH_TIMEOUT_MS : MIRROR_TIMEOUT_MS)
+        signal: AbortSignal.timeout(i < 2 ? mainTimeoutMs : MIRROR_TIMEOUT_MS)
       });
       if (!res.ok) throw new Error(`Overpass HTTP ${res.status}`);
       return ((await res.json()) as { elements?: unknown[] }).elements ?? [];
@@ -82,7 +97,8 @@ export function createTileStore<T>(opts: TileStoreOptions<T>): TileStore<T> {
         queued.delete(k);
         const [lat, lon] = k.split("_").map(Number) as [number, number];
         try {
-          const items = opts.parse(await overpass(opts.query(lat, lon, lat + 1, lon + 1)));
+          const q = opts.query(lat, lon, lat + 1, lon + 1);
+          const items = opts.parse(await inLane(opts.lane, () => overpass(q, opts.timeoutMs)));
           const tile: Tile<T> = { at: Date.now(), items };
           tiles.set(k, tile);
           failedAt.delete(k);

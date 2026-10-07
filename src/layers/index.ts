@@ -10,6 +10,7 @@ import { registerDirections } from "./directions";
 import { registerHistory } from "./history";
 import { registerConflicts } from "./conflicts";
 import { registerPower } from "./power";
+import { registerAbandoned } from "./abandoned";
 
 /**
  * Registers every optional layer. Their toggle buttons are drawn straight into the main "Data layers" menu, under
@@ -27,6 +28,7 @@ export function initExtraLayers(viewer: Viewer): LayerHost | null {
   registerConflicts(host);
   registerInfrastructureLayers(host);
   registerPower(host);
+  registerAbandoned(host);
   registerRadio(host);
   registerLaunches(host);
   registerDirections(host);
