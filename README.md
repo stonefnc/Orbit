@@ -12,7 +12,7 @@
 <!-- Screenshot: full globe, desktop, a few layers on (aircraft + satellites). Save as docs/images/hero.png -->
 
 Orbit pulls more than twenty public feeds into one CesiumJS globe. A small Express server does the fetching, merging,
-caching and failover; the browser only draws. It works on a fresh clone with no API keys, runs smoothly on a phone,
+caching and failover, and the browser only draws. It works on a fresh clone with no API keys, runs smoothly on a phone,
 installs as a web app, and builds into a stand-alone Windows app.
 
 It is a personal project, built to answer a simple question well: *what is happening on Earth right now, and how do you
@@ -33,11 +33,11 @@ source that can't be used cleanly is left out rather than worked around.
 | Infrastructure | Undersea cables, dams, data centers, power plants by fuel and output, and the high-voltage grid. |
 | Launches and radio | Upcoming rocket launches with livestream links, and live radio stations. |
 | 3D cities | Photorealistic 3D tiles with a fly mode (W A S D) for moving between buildings. |
-| Time machine | Scrub back through recorded history; the conflict layer can follow it. |
+| Time machine | Scrub back through recorded history. The conflict layer can follow it. |
 
 Search (top bar) finds places, stores, flights, satellites and cameras. Directions can route around mapped ALPR cameras.
 
-<!-- Screenshots, side by side: an aircraft selected with its track; the camera layer with a live still; the phone layout. Save in docs/images/ -->
+<!-- Screenshots, side by side: an aircraft selected with its track, the camera layer with a live still, and the phone layout. Save in docs/images/ -->
 
 ## Quick start
 
@@ -50,7 +50,7 @@ npm install
 npm run dev
 ```
 
-Open <http://localhost:5173>. `npm run dev` starts the API server on port 8787 and the Vite client together; the client
+Open <http://localhost:5173>. `npm run dev` starts the API server on port 8787 and the Vite client together. The client
 alone (`npm run dev:vite`) loads the globe but no live layers.
 
 To open it from a phone on the same Wi-Fi, run `npm run dev:lan` and use the Network address Vite prints. Anyone on
@@ -70,7 +70,7 @@ Everything above works with no keys. Keys unlock more coverage and are entered i
 | `FIRMS_MAP_KEY` | Satellite fire detections | NASA EONET fires |
 | `ADSBX_API_KEY` | A third aircraft feed (paid) | Not needed |
 
-Variables starting with `VITE_` are visible to the browser; the rest stay on the server.
+Variables starting with `VITE_` are visible to the browser. The rest stay on the server.
 
 ## How it works
 
@@ -96,7 +96,7 @@ flowchart LR
     UI <--> IDB
 ```
 
-**The browser draws; the server fetches.** The client never calls most providers directly. The server holds the keys,
+**The browser draws. The server fetches.** The client never calls most providers directly. The server holds the keys,
 merges overlapping feeds, caches results, backs off after errors and keeps serving the last good answer when an upstream
 goes down.
 
@@ -116,7 +116,7 @@ goes down.
 Orbital elements come from CelesTrak's active catalog, then KeepTrack (with a key), then SatNOGS merged over the last
 known full catalog, so a blocked provider never empties the layer. CelesTrak is polled no faster than it republishes
 (about every two hours). Positions are propagated in the browser with SGP4 (satellite.js), and the catalog is kept in
-IndexedDB so reloads are instant. An earlier `localStorage` cache silently exceeded its quota; IndexedDB replaced it.
+IndexedDB so reloads are instant. An earlier `localStorage` cache silently exceeded its quota, so IndexedDB replaced it.
 
 ### Rendering
 
@@ -124,9 +124,9 @@ IndexedDB so reloads are instant. An earlier `localStorage` cache silently excee
   rather than 60 times a second. This is what makes the phone experience workable.
 - **Horizon culling.** Markers on the far side of the Earth are hidden by comparing their distance to the computed
   horizon distance, recalculated in 2% steps so vertex data is rewritten on zoom, not on every pan frame.
-- **Two qualities on touch devices.** At rest a phone renders at high resolution with anti-aliasing and fine terrain;
-  while a finger is moving it drops to a lighter preset and sharpens again after release. Desktops are untouched.
-- **Clustering by altitude.** Markers cluster when zoomed out and un-cluster below a set camera height; markers sharing
+- **Two qualities on touch devices.** At rest a phone renders at high resolution with anti-aliasing and fine terrain.
+  While a finger is moving it drops to a lighter preset and sharpens again after release. Desktops are untouched.
+- **Clustering by altitude.** Markers cluster when zoomed out and un-cluster below a set camera height. Markers sharing
   one coordinate (several cameras on a pole) fan out into a small ring so each stays clickable.
 
 ### Security and privacy
@@ -135,7 +135,7 @@ Orbit is designed to run on one person's computer, and the defaults reflect that
 
 - **Camera proxy.** The browser only ever receives an Orbit URL. The server fetches stills from a per-source allow-list
   over HTTPS, re-checks every redirect, caps response size and verifies the file's leading bytes before passing it on.
-  It identifies itself honestly; sources that block non-browser clients are left out instead of spoofed.
+  It identifies itself honestly, and sources that block non-browser clients are left out instead of spoofed.
 - **Keys.** Server keys can only be changed from the machine running Orbit and are never sent back to the page.
 - **Network exposure.** The AIS websocket accepts browser connections only from this computer or, in LAN mode, from a
   page whose origin is a private IPv4 literal matching the host it was served from. DNS names are rejected, which closes
@@ -155,17 +155,17 @@ Orbit is designed to run on one person's computer, and the defaults reflect that
 ## Running it elsewhere
 
 - **As an app:** Orbit is a PWA. Once it is running locally, use your browser's "Install app" or "Add to Home Screen".
-  Only the app shell is cached; live data always comes from the network.
+  Only the app shell is cached. Live data always comes from the network.
 - **On Windows:** `npm run build:exe` produces a stand-alone `Orbit.exe` (Electron with the server inside) in
   `exe-out/`. It listens on this computer only and keeps saved keys in your user folder. It is not code-signed, so
   Windows will warn about an unknown publisher.
 
 ## Known limitations
 
-- Ships are coastal only. Free AIS is land-based; open-ocean coverage requires paid satellite AIS.
-- No cameras in South America or Africa yet; every source found there requires a per-user key.
+- Ships are coastal only. Free AIS is land-based, and open-ocean coverage requires paid satellite AIS.
+- No cameras in South America or Africa yet. Every source found there requires a per-user key.
 - Several feeds are providers' own map endpoints rather than documented APIs and can change without notice.
-- `src/main.ts` is large (about 5,500 lines). The layer code around it is modular; splitting the core is planned.
+- `src/main.ts` is large (about 5,500 lines). The layer code around it is modular.
 - It is built for one user on one machine. Hosting it for others would need accounts, secret storage, per-user rate
   limits and a review of each provider's commercial terms.
 
@@ -173,7 +173,7 @@ Orbit is designed to run on one person's computer, and the defaults reflect that
 
 ```
 src/            Browser client (TypeScript, CesiumJS)
-  layers/       Toggleable layers; each registers itself with the layer host
+  layers/       Toggleable layers, each registered with the layer host
   providers/    Client-side feed adapters
   alpr/         ALPR layer, adapters and view-cone geometry
 server/         Express API: feed fetching, merging, caching, camera proxy
@@ -185,8 +185,8 @@ scripts/        Release build, Windows build and data-generation scripts
 docs/           Design notes
 ```
 
-Further reading: [DATA_SOURCES.md](./DATA_SOURCES.md) lists every source, its terms and its limits;
-[ALPR_ADAPTER.md](./ALPR_ADAPTER.md) explains the ALPR layer; [docs/CaseStudy.md](./docs/CaseStudy.md) covers the
+Further reading: [DATA_SOURCES.md](./DATA_SOURCES.md) lists every source, its terms and its limits.
+[ALPR_ADAPTER.md](./ALPR_ADAPTER.md) explains the ALPR layer, and [docs/CaseStudy.md](./docs/CaseStudy.md) covers the
 decisions behind the project.
 
 ## Data and license
